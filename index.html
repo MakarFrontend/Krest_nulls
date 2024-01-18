@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="ico.png">
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Крестики - нолики</title>
+    </head>
+    <body>
+        <h1 id="head">Крестики - Нолики +</h1>
+        <p id="whyPlay">Ваш ход . . .</p>
+        <p>Карма: <span id="karma"></span></p>
+        <div class="gameMap">
+            <button class="gameLi" id="item_0" onclick="Play(0)"></button>
+            <button class="gameLi" id="item_1" onclick="Play(1)"></button>
+            <button class="gameLi" id="item_2" onclick="Play(2)"></button>
+            <button class="gameLi" id="item_3" onclick="Play(3)"></button>
+            <button class="gameLi" id="item_4" onclick="Play(4)"></button>
+            <button class="gameLi" id="item_5" onclick="Play(5)"></button>
+            <button class="gameLi" id="item_6" onclick="Play(6)"></button>
+            <button class="gameLi" id="item_7" onclick="Play(7)"></button>
+            <button class="gameLi" id="item_8" onclick="Play(8)"></button>
+        </div>
+        <p>Ваша история</p>
+        <ul id="hisroriesOfWin" style="list-style-type: none;">
+        </ul>
+        <script defer src="renderStatistic.js"></script>
+        <script src="gameScript.js"></script>
+    </body>
+</html>

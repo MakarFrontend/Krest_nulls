@@ -1,0 +1,49 @@
+body {
+    background-color: black;
+    font-family: arial;
+    margin: 0px;
+}
+h1 {
+    color: #FFF;
+    text-shadow: 3px 3px 5px fuchsia;
+    font-size: 30px;
+    margin-left: 10px;
+}
+p {
+    color: #FFF;
+    font-size: 14px;
+    text-align: center;
+}
+ul {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+li {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: #FFF;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 7px;
+    width: 300px;
+}
+.gameMap {
+    display: block;
+    width: 318px;
+    margin: auto;
+}
+.gameLi {
+    display: inline;
+    margin: 0px 0px 0px 0px;
+    border: 3px solid #FFF;
+    height: 100px;
+    width: 100px;
+    background-size: cover;
+    background-color: black;
+    cursor: pointer;
+} .gameLi:active {
+    background-color: black;
+}
