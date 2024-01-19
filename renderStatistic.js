@@ -7,8 +7,6 @@ function sumKarma(acc, item) {
     }
     return forKarmaFunc;
 }
-const height = document.documentElement.clientHeight;
-const width = document.documentElement.clientWidth;
 let history = JSON.parse(localStorage.getItem("history"));
 let ulHistory = document.getElementById('hisroriesOfWin');
 let karma = history.reduce(sumKarma, 0);
