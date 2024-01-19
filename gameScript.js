@@ -3,15 +3,15 @@
 1 - people
 2 - computer
 */
-import {computerWin, diag_rows_down} from 'computerPlayFunctions.js';
+import {computerWin} from 'computerPlayFunctions.js';
 let mapForMe = [0, 1, 2,
                 3, 4, 5,
                 6, 7, 8];
 let map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 let skins = ['url(null.png)', 'url(krest.png)', 'url(trap.png)', 'URL(oval.png)', 'url(treangle.png)', 'url(romb.png)', 'url(kvadrat.png)']; //Массив со скинами
-peopleSkin = skins[5]; //Скин человека
-computerSkin = skins[0]; //Скин компьютера
+let peopleSkin = skins[5]; //Скин человека
+let computerSkin = skins[0]; //Скин компьютера
 
 function checkWin(team) { //Проверка на победу
     function checkNobody() { //Функция Проверки ничьи
