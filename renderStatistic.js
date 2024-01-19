@@ -29,19 +29,3 @@ if (history != null) {
     });
     document.querySelector('#karma').innerHTML = karma;
 }
-/*function editHistoryNow()  {
-    history = JSON.parse(localStorage.getItem("history"));
-    let item = history.pop();
-    let li = document.createElement('li');
-    if (item == 'gameOver') {
-        li.innerHTML = '<strong>Поражение</strong>';
-        li.style.backgroundColor = '#B22222';
-    } else if (item == 'win') {
-        li.innerHTML = '<strong>Победа</strong>';
-        li.style.backgroundColor = '#00FF00';
-    } else if (item == 'nobody') {
-        li.innerHTML = '<strong>Ничья</strong>';
-        li.style.backgroundColor = '#696969';
-    }
-    ulHistory.prepend(li);
-}*/

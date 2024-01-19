@@ -1,7 +1,7 @@
 body {
     background-color: black;
     font-family: arial;
-    margin: 0px;
+    margin: 0px auto;
 }
 h1 {
     color: #FFF;
@@ -33,12 +33,14 @@ li {
 .gameMap {
     display: block;
     width: 318px;
+    height: 318px;
     margin: auto;
 }
 .gameLi {
     display: inline;
-    margin: 0px 0px 0px 0px;
-    border: 3px solid #FFF;
+    margin: 0;
+    padding: 0;
+    outline: 3px solid #FFF;
     height: 100px;
     width: 100px;
     background-size: cover;
