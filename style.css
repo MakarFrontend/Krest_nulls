@@ -1,7 +1,7 @@
 body {
     background-color: black;
     font-family: arial;
-    margin: 0px auto;
+    margin: 0px;
 }
 h1 {
     color: #FFF;
@@ -14,30 +14,26 @@ p {
     font-size: 14px;
     text-align: center;
 }
-ul {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+img {
+    background-size: cover;
 }
-li {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    color: #FFF;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-top: 7px;
-    width: 300px;
+
+dialog {
+    background-color: black;
+    border: 2px solid #FFF;
+    height: 74px;
+    width: 120px;
 }
+
 .gameMap {
     display: block;
-    width: 318px;
-    height: 318px;
+    width: 312px;
+    height: 312px;
     margin: auto;
 }
 .gameLi {
     display: inline;
+    border-width: 0px;
     margin: 0;
     padding: 0;
     outline: 3px solid #FFF;
@@ -48,4 +44,10 @@ li {
     cursor: pointer;
 } .gameLi:active {
     background-color: black;
+}
+
+#peopleSkinChange {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
 }

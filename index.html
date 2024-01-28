@@ -4,13 +4,22 @@
         <meta charset="UTF-8">
         <link rel="icon" href="ico.png">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="details.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Крестики - нолики</title>
     </head>
     <body>
+
+        <!--Результат игры. Модальное окно-->
+        <dialog onclick="closeGameRezult('WinOverNobody')" id="WinOverNobody">
+            <p id="TXTWinOverNobody" style="text-align: center; font-size: 20px; vertical-align: middle;"></p>
+        </dialog>
+
+        <!--Заголовок-->
         <h1 id="head">Крестики - Нолики +</h1>
+
+        <!--Игровое поле-->
         <p id="whyPlay">Ваш ход . . .</p>
-        <p>Карма: <span id="karma"></span></p>
         <div class="gameMap">
             <button class="gameLi" id="item_0" onclick="Play(0)"></button>
             <button class="gameLi" id="item_1" onclick="Play(1)"></button>
@@ -22,10 +31,53 @@
             <button class="gameLi" id="item_7" onclick="Play(7)"></button>
             <button class="gameLi" id="item_8" onclick="Play(8)"></button>
         </div>
-        <p>Ваша история</p>
-        <ul id="hisroriesOfWin" style="list-style-type: none;">
-        </ul>
+
+        <!--Ходить вторым или заново-->
+        <div id="doButton" class="doButton" onclick="doButton('second')">Ходить вторым</div>
+
+        <!--Настройки-->
+        <details open>
+            <summary style="font-size: 15px;" onclick="summaryFunc('setting')">
+                <img id="listSummarySetting" src="toClose.png" style="height: 15px; width: 15px;">
+                <span style="margin-left: 10px;">Настройки</span>
+            </summary>
+
+            <!--Выбор человек скин-->
+            <p style="float: left; margin-top: 15px; margin-bottom: 10px; margin-left: 5px; margin-right: 5px;">Вы</p>
+            <img id="peopleSkinChange" onclick="clickForChangeSkin(1)" src="null.png" height="20px" width="20px">
+            <!--Показываем скин человека-->
+            <script>
+                document.getElementById('peopleSkinChange').setAttribute('src', localStorage.getItem('people'));
+            </script>
+
+            <!--Выбор скина компьютера-->
+            <p style="float: right; margin-top: 15px; margin-bottom: 10px; margin-left: 5px; margin-right: 5px;">Компьютер</p>
+            <img style="float: right;" id="computerSkinChange" onclick="clickForChangeSkin(2)" src="krest.png" height="20px" width="20px">
+            <!--Показываем скин Компа-->
+            <script>
+                document.getElementById('computerSkinChange').setAttribute('src', localStorage.getItem('computer'));
+            </script>
+
+            <!--Настройки скинов, Модальное окно-->
+            <dialog id="choseSkin">
+            </dialog>
+        </details>
+
+        <!--Аналитика-->
+        <details open>
+            <summary style="font-size: 15px;" onclick="summaryFunc('analitic')">
+                <img id="listSummaryAnalitic" src="toClose.png" style="height: 15px; width: 15px;">
+                <span style="margin-left: 10px;">Аналитика</span>
+            </summary>
+            <p style="color: #00FF00;">Победы: <span id="wins"></span>%</p>
+            <p style="color: #FF0000;">Поражения: <span id="overs"></span>%</p>
+            <p style="color: #FFF;">Ничьи: <span id="nos"></span>%</p>
+        </details>
+
+        <!--Скрипты-->
         <script src="gameScript.js"></script>
+        <script src="summaryFunc.js"></script>
+        <script src="settings.js"></script>
         <script src="renderStatistic.js"></script>
     </body>
 </html>
