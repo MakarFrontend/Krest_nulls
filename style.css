@@ -4,10 +4,25 @@ body {
     margin: 0px;
 }
 h1 {
+    display: inline;
     color: #FFF;
     text-shadow: 3px 3px 5px fuchsia;
     font-size: 30px;
     margin-left: 10px;
+    margin-top: 2px;
+}
+header {
+    background-color: black;
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    height: 40px;
+    border-width: 0px 0px 0px 0px;
+    border-style: dotted;
+}
+main {
+    margin-top: 50px;
 }
 p {
     color: #FFF;
@@ -42,12 +57,18 @@ dialog {
     background-size: cover;
     background-color: black;
     cursor: pointer;
-} .gameLi:active {
-    background-color: black;
 }
 
-#peopleSkinChange {
+#conditionAlwaysSecond {
+    cursor: pointer;
+}
+
+#peopleSkinChange, #computerSkinChange {
     margin-top: 15px;
     margin-bottom: 10px;
     cursor: pointer;
+}
+
+#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #doButton, #head, .gameLi, img {
+    -webkit-tap-highlight-color: transparent;
 }

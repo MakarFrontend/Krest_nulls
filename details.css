@@ -11,11 +11,13 @@ details > summary {
     padding-top: 4px;
     padding-bottom: 4px;
     list-style-type: none;
+    -webkit-tap-highlight-color: transparent;
 }
 details[open] > summary {
     color: black; 
     background-color: #FFF;
     list-style-type: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .doButton {

@@ -1,7 +1,44 @@
 "use strict";
+/* teams
+0 - empty
+1 - people
+2 - computer
+*/
+let mapForMe = [0, 1, 2,
+    3, 4, 5,
+    6, 7, 8];
+let map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let button = document.getElementById('doButton'); //Кнопка второго, заново
+let conditionAlwaysSecond = localStorage.getItem('alwaysSecond') || false; //Состояние второго всегда
+
+if (localStorage.getItem('alwaysSecond') == 'true') {
+    computerPlay();
+}
+
+function alwaysSecond(inn) {
+    if (inn === 'Отключено') {
+        document.querySelector('#conditionAlwaysSecond').innerHTML = 'Включено';
+        document.querySelector('#conditionAlwaysSecond').style.color = '#00FF00';
+        button.removeAttribute('onclick');
+        button.setAttribute('onclick', `doButton("ag")`);
+        button.innerHTML = 'Заново';
+        conditionAlwaysSecond = true;
+        localStorage.setItem('alwaysSecond', 'true');
+        if (map.join(' ') == '0 0 0 0 0 0 0 0 0') {
+            computerPlay();
+        }
+    } else {
+        document.querySelector('#conditionAlwaysSecond').innerHTML = 'Отключено';
+        document.querySelector('#conditionAlwaysSecond').style.color = '#FF0000';
+        conditionAlwaysSecond = false;
+        localStorage.setItem('alwaysSecond', 'false');
+    }
+}
+
 function closeGameRezult(whichDiag) {
     document.getElementById(whichDiag).close();
 }
+
 function gameRezult(what) {
     let TXTWinOverNobody = document.getElementById('TXTWinOverNobody');
     TXTWinOverNobody.innerHTML = `<strong>${what}</strong>`;
@@ -15,7 +52,6 @@ function gameRezult(what) {
     document.getElementById('WinOverNobody').showModal();
 }
 
-let button = document.getElementById('doButton');
 function doButton(ev) { //Кнопка хода второго, Заново
     if (ev == 'second') {
         button.removeAttribute('onclick');
@@ -24,9 +60,11 @@ function doButton(ev) { //Кнопка хода второго, Заново
         computerPlay();
     } else if (ev == "ag") {
         againInMain();
+        if (conditionAlwaysSecond == false) {
         button.removeAttribute('onclick');
         button.setAttribute('onclick', `doButton('second')`);
         button.innerHTML = 'Ходить вторым';
+        }
     }
 }
 function againInMain() { //Заново
@@ -37,18 +75,18 @@ function againInMain() { //Заново
         document.getElementById(`item_${e}`).setAttribute('onclick', `Play(${e})`);
         e++;
     }
-    document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
-    map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    if (conditionAlwaysSecond == true) {
+        button.removeAttribute('onclick');
+        button.setAttribute('onclick', `doButton("ag")`);
+        button.innerHTML = 'Заново';
+        document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
+        map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        computerPlay();
+    } else {
+        document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
+        map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
 }
-/* teams
-0 - empty
-1 - people
-2 - computer
-*/
-let mapForMe = [0, 1, 2,
-                3, 4, 5,
-                6, 7, 8];
-let map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function checkWin(team) { //Проверка на победу
     function checkNobody() { //Функция Проверки ничьи
@@ -86,7 +124,8 @@ function checkWin(team) { //Проверка на победу
 
 
 function computerPlay() { //Компьютер играет
-    let computerSkin = `url(${localStorage.getItem('computer')}`; //Скин компьютера
+    let e = localStorage.getItem('computer') || 'krest.png';
+    let computerSkin = `url(${e})`; //Скин компьютера
     function computerCanWin(where) { //Компьютер сделал выбор
         document.getElementById(`item_${where}`).style.backgroundImage = computerSkin;
         document.getElementById(`item_${where}`).removeAttribute('onclick');
@@ -249,7 +288,8 @@ function computerPlay() { //Компьютер играет
 
 
 function peoplePlay(id) { //Ход человека
-    let peopleSkin = `url(${localStorage.getItem('people')})`; //Скин человека
+    let e = localStorage.getItem('people') || 'null.png';
+    let peopleSkin = `url(${e})`; //Скин человека
     document.getElementById(`item_${id}`).style.backgroundImage = peopleSkin;
     document.getElementById(`item_${id}`).removeAttribute('onclick');
     map[id] = 1;
@@ -277,7 +317,8 @@ function appToLocalStorage(event) {
 
 
 function Play(id) {
-    if (button.innerHTML == 'Ходить вторым') { //Меняем текст кнопки если игрок первый
+    document.getElementById('plug').showModal();
+    if ((button.innerHTML == 'Ходить вторым') && (conditionAlwaysSecond == false)) { //Меняем текст кнопки если игрок первый
         button.removeAttribute('onclick');
         button.setAttribute('onclick', `doButton("ag")`);
         button.innerHTML = 'Заново';
@@ -286,6 +327,7 @@ function Play(id) {
     let whyPlayNow = document.querySelector('#whyPlay');
     let whyWin = checkWin(1);
     if (whyWin == true) {
+        document.getElementById('plug').close();
         gameRezult('Победа');
         whyPlayNow.innerHTML = 'Победа';
         let e = 0;
@@ -295,6 +337,7 @@ function Play(id) {
         }
         appToLocalStorage("wins");
     } else if (whyWin == null) {
+        document.getElementById('plug').close();
         gameRezult('Ничья');
         whyPlayNow.innerHTML = 'Ничья';
         appToLocalStorage("nos");
@@ -303,6 +346,7 @@ function Play(id) {
             computerPlay();
             whyWin = checkWin(2);
             if (whyWin == true) {
+                document.getElementById('plug').close();
                 gameRezult('Поражение');
                 whyPlayNow.innerHTML = 'Поражение';
                 let e = 0;
@@ -312,10 +356,12 @@ function Play(id) {
                 }
                 appToLocalStorage("overs");
             } else if (whyWin == null) {
+                document.getElementById('plug').close();
                 gameRezult('Ничья');
                 whyPlayNow.innerHTML = 'Ничья';
                 appToLocalStorage("nos");
             } else {
+                document.getElementById('plug').close();
                 whyPlayNow.innerHTML = 'Ваш ход . . .';
             }
         }

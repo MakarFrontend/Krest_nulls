@@ -9,17 +9,16 @@ class Skin {
     }
 }
 
-let skins = []; 
+let nulls = new Skin('null.png', 0);
+let krest = new Skin('krest.png', 0);
+let trap = new Skin('trap.png', 0);
+let oval = new Skin('oval.png', 0);
+let treangle = new Skin('treangle.png', 0);
+let romb = new Skin('romb.png', 0);
+let kvadrat = new Skin('kvadrat.png', 0);
 
-let nulls = new Skin('null.png', '0');
-let krest = new Skin('krest.png', '0');
-let trap = new Skin('trap.png', '0');
-let oval = new Skin('oval.png', '0');
-let treangle = new Skin('treangle.png', '0');
-let romb = new Skin('romb.png', '0');
-let kvadrat = new Skin('kvadrat.png', '0');
-
-skins.push(nulls, krest, trap, oval, treangle, romb, kvadrat);
+let baseSkins = []; 
+baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat);
 
 function changeSkin(url, why) {
     if (why == 1) {
@@ -48,7 +47,7 @@ function clickForChangeSkin(why) {
 
     document.getElementById('choseSkin').innerHTML = "";
 
-    skins.forEach((item) => addSkinToModal(item.URL));
+    baseSkins.forEach((item) => addSkinToModal(item.URL));
 
     choseSkinDiag.style.height = '120px';
     choseSkinDiag.showModal();
