@@ -7,9 +7,14 @@
 let mapForMe = [0, 1, 2,
     3, 4, 5,
     6, 7, 8];
-let map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let map = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //Карта игрового поля
 let button = document.getElementById('doButton'); //Кнопка второго, заново
 let conditionAlwaysSecond = localStorage.getItem('alwaysSecond') || false; //Состояние второго всегда
+if (conditionAlwaysSecond === 'false') {
+    conditionAlwaysSecond = false;
+} else if (conditionAlwaysSecond === 'true') {
+    conditionAlwaysSecond = true;
+}
 
 if (localStorage.getItem('alwaysSecond') == 'true') {
     computerPlay();
@@ -67,6 +72,7 @@ function doButton(ev) { //Кнопка хода второго, Заново
         }
     }
 }
+
 function againInMain() { //Заново
     let e = 0;
     while (e < 9) {
@@ -83,6 +89,9 @@ function againInMain() { //Заново
         map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         computerPlay();
     } else {
+        button.removeAttribute('onclick');
+        button.setAttribute('onclick', `doButton("second")`);
+        button.innerHTML = 'Ходить вторым';
         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
         map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
@@ -317,8 +326,8 @@ function appToLocalStorage(event) {
 
 
 function Play(id) {
-    document.getElementById('plug').showModal();
-    if ((button.innerHTML == 'Ходить вторым') && (conditionAlwaysSecond == false)) { //Меняем текст кнопки если игрок первый
+    document.getElementById('plug').style.display = 'block';
+    if ((button.innerHTML == 'Ходить вторым')/* && (conditionAlwaysSecond == false)*/) { //Меняем текст кнопки если игрок первый
         button.removeAttribute('onclick');
         button.setAttribute('onclick', `doButton("ag")`);
         button.innerHTML = 'Заново';
@@ -327,7 +336,7 @@ function Play(id) {
     let whyPlayNow = document.querySelector('#whyPlay');
     let whyWin = checkWin(1);
     if (whyWin == true) {
-        document.getElementById('plug').close();
+        document.getElementById('plug').style.display = 'none';
         gameRezult('Победа');
         whyPlayNow.innerHTML = 'Победа';
         let e = 0;
@@ -337,7 +346,7 @@ function Play(id) {
         }
         appToLocalStorage("wins");
     } else if (whyWin == null) {
-        document.getElementById('plug').close();
+        document.getElementById('plug').style.display = 'none';
         gameRezult('Ничья');
         whyPlayNow.innerHTML = 'Ничья';
         appToLocalStorage("nos");
@@ -346,7 +355,7 @@ function Play(id) {
             computerPlay();
             whyWin = checkWin(2);
             if (whyWin == true) {
-                document.getElementById('plug').close();
+                document.getElementById('plug').style.display = 'none';
                 gameRezult('Поражение');
                 whyPlayNow.innerHTML = 'Поражение';
                 let e = 0;
@@ -356,12 +365,12 @@ function Play(id) {
                 }
                 appToLocalStorage("overs");
             } else if (whyWin == null) {
-                document.getElementById('plug').close();
+                document.getElementById('plug').style.display = 'none';
                 gameRezult('Ничья');
                 whyPlayNow.innerHTML = 'Ничья';
                 appToLocalStorage("nos");
             } else {
-                document.getElementById('plug').close();
+                document.getElementById('plug').style.display = 'none';
                 whyPlayNow.innerHTML = 'Ваш ход . . .';
             }
         }

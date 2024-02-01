@@ -13,16 +13,13 @@ h1 {
 }
 header {
     background-color: black;
-    position: fixed;
     width: 100%;
-    left: 0px;
-    top: 0px;
+    margin-top: 0px;
     height: 40px;
     border-width: 0px 0px 0px 0px;
-    border-style: dotted;
 }
 main {
-    margin-top: 50px;
+    margin-top: 0px;
 }
 p {
     color: #FFF;

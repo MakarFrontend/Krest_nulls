@@ -11,7 +11,7 @@
     <body>
 
         <!--Заглушка-->
-        <dialog id="plug" style="width: 100%; height: 100%; opacity: 0;"></dialog>
+        <div id="plug" style="width: 100%; height: 100%; opacity: 0; position: fixed; display: none; z-index: 1;"></div>
 
         <!--Результат игры. Модальное окно-->
         <dialog onclick="closeGameRezult('WinOverNobody')" id="WinOverNobody">
@@ -21,12 +21,7 @@
         <!--Заголовок-->
         <span id="forScroll"></span>
         <header>
-            <h1 id="head" style="cursor: pointer;" onclick="scrollToTop()">Крестики - Нолики +</h1>
-            <script>
-                function scrollToTop() {
-                    document.getElementById('forScroll').scrollIntoView({behavior: "smooth", block: "center", inline: "start"});
-                }
-            </script>
+            <h1 id="head">Крестики - Нолики +</h1>
         </header>
 
         <main>
@@ -89,6 +84,8 @@
 
                 <!--Настройки скинов, Модальное окно-->
                 <dialog id="choseSkin">
+                    <div id="choseSkinContent" style="margin: 0px;">
+                    </div>
                 </dialog>
             </details>
 

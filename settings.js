@@ -1,5 +1,6 @@
-const choseSkinDiag = document.getElementById('choseSkin');
+const choseSkinDiag = document.getElementById('choseSkin'); //Модальное окно выбора скина
 choseSkinDiag.setAttribute('onclick', "closeGameRezult('choseSkin')");
+const choseSkinContent = document.getElementById('choseSkinContent'); //Внутри диалога
 let renderCondition = false;
 
 class Skin {
@@ -16,9 +17,22 @@ let oval = new Skin('oval.png', 0);
 let treangle = new Skin('treangle.png', 0);
 let romb = new Skin('romb.png', 0);
 let kvadrat = new Skin('kvadrat.png', 0);
+let plus = new Skin('plus.png', 0);
 
-let baseSkins = []; 
-baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat);
+let kvadratDot = new Skin('kvadratDot.png', 0);
+let spiralDot = new Skin('spiralDot.png', 0);
+let smileDot = new Skin('smileDot.png', 0);
+let dotOnly = new Skin('dotOnly.png', 0);
+
+let earthP = new Skin('earthDot.png', 0);
+let jupiterP = new Skin('jupiter.png', 0);
+
+let baseSkins = [];
+let dotSkins = [];
+let planetSkins = [];
+baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat, plus);
+dotSkins.push(spiralDot, smileDot, kvadratDot, dotOnly);
+planetSkins.push(earthP, jupiterP)
 
 function changeSkin(url, why) {
     if (why == 1) {
@@ -31,6 +45,16 @@ function changeSkin(url, why) {
 }
 
 function clickForChangeSkin(why) {
+    function createHeadline(txt) {
+        let r = document.createElement('p');
+        r.style.float = 'left';
+        r.style.marginLeft = '5px';
+        r.style.marginTop = '5px';
+        r.style.display = 'block';
+        r.style.width = '100%';
+        r.innerHTML = txt;
+        choseSkinContent.append(r);
+    }
     function addSkinToModal(url) {
         let skinIMG = document.createElement('img');
         skinIMG.setAttribute('src', url);
@@ -42,12 +66,19 @@ function clickForChangeSkin(why) {
         skinIMG.style.marginBottom = '5px';
         skinIMG.style.border = '1px solid #FFF'
         skinIMG.style.backgroundSize = 'cover';
-        choseSkinDiag.append(skinIMG);
+        choseSkinContent.append(skinIMG);
     }
 
-    document.getElementById('choseSkin').innerHTML = "";
+    choseSkinContent.innerHTML = '';
 
+    createHeadline('Базовые скины');
     baseSkins.forEach((item) => addSkinToModal(item.URL));
+
+    createHeadline('Скины - точки');
+    dotSkins.forEach((item) => addSkinToModal(item.URL));
+
+    createHeadline('Планеты');
+    planetSkins.forEach((item) => addSkinToModal(item.URL));
 
     choseSkinDiag.style.height = '120px';
     choseSkinDiag.showModal();
