@@ -5,8 +5,8 @@
 2 - computer
 */
 let mapForMe = [0, 1, 2,
-    3, 4, 5,
-    6, 7, 8];
+                3, 4, 5,
+                6, 7, 8];
 let map = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //Карта игрового поля
 let button = document.getElementById('doButton'); //Кнопка второго, заново
 let conditionAlwaysSecond = localStorage.getItem('alwaysSecond') || false; //Состояние второго всегда
@@ -327,7 +327,7 @@ function appToLocalStorage(event) {
 
 function Play(id) {
     document.getElementById('plug').style.display = 'block';
-    if ((button.innerHTML == 'Ходить вторым')/* && (conditionAlwaysSecond == false)*/) { //Меняем текст кнопки если игрок первый
+    if (conditionAlwaysSecond == false) { //Меняем текст кнопки если игрок первый
         button.removeAttribute('onclick');
         button.setAttribute('onclick', `doButton("ag")`);
         button.innerHTML = 'Заново';

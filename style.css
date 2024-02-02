@@ -19,11 +19,11 @@ header {
     border-width: 0px 0px 0px 0px;
 }
 main {
-    margin-top: 0px;
+    margin: 0px;
 }
 p {
     color: #FFF;
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
 }
 img {
@@ -41,16 +41,18 @@ dialog {
     display: block;
     width: 312px;
     height: 312px;
-    margin: auto;
+    margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .gameLi {
-    display: inline;
+    display: inline-block;
     border-width: 0px;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     outline: 3px solid #FFF;
-    height: 100px;
-    width: 100px;
+    height: 101px;
+    width: 101px;
     background-size: cover;
     background-color: black;
     cursor: pointer;

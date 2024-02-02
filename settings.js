@@ -26,13 +26,15 @@ let dotOnly = new Skin('dotOnly.png', 0);
 
 let earthP = new Skin('earthDot.png', 0);
 let jupiterP = new Skin('jupiter.png', 0);
+let moonP = new Skin('moonP.png', 0);
+let satyrnP = new Skin('saturnP.png', 0);
 
 let baseSkins = [];
 let dotSkins = [];
 let planetSkins = [];
 baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat, plus);
 dotSkins.push(spiralDot, smileDot, kvadratDot, dotOnly);
-planetSkins.push(earthP, jupiterP)
+planetSkins.push(earthP, moonP, jupiterP, satyrnP)
 
 function changeSkin(url, why) {
     if (why == 1) {
