@@ -34,33 +34,53 @@ let dotSkins = [];
 let planetSkins = [];
 baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat, plus);
 dotSkins.push(spiralDot, smileDot, kvadratDot, dotOnly);
-planetSkins.push(earthP, moonP, jupiterP, satyrnP)
+planetSkins.push(earthP, moonP, jupiterP, satyrnP);
 
 function changeSkin(url, why) {
-    if (why == 1) {
+    let mapInSettings = JSON.parse(sessionStorage.getItem('map'));
+
+    function changeGameLiBack(whyPl) {
+        let i = 0;
+        while (i < 16) {
+            if (whyPl == '1') {
+                if (mapInSettings[i] == whyPl) {
+                    document.getElementById(`item_${i}`).style.backgroundImage = `url(${localStorage.getItem('people')})`;
+                }
+            } else if (whyPl == '2') {
+                if (mapInSettings[i] == whyPl) {
+                    document.getElementById(`item_${i}`).style.backgroundImage = `url(${localStorage.getItem('computer')})`;
+                }
+            }
+            i++;
+        }
+    }
+
+    if (why == '1') {
         localStorage.setItem('people', url);
         document.getElementById('peopleSkinChange').setAttribute('src', localStorage.getItem('people'));
+        changeGameLiBack(1);
     } else {
         localStorage.setItem('computer', url);
         document.getElementById('computerSkinChange').setAttribute('src', localStorage.getItem('computer'));
+        changeGameLiBack(2);
     }
 }
 
 function clickForChangeSkin(why) {
     function createHeadline(txt) {
-        let r = document.createElement('p');
-        r.style.float = 'left';
-        r.style.marginLeft = '5px';
-        r.style.marginTop = '5px';
-        r.style.display = 'block';
-        r.style.width = '100%';
-        r.innerHTML = txt;
-        choseSkinContent.append(r);
+        let headLine = document.createElement('p');
+        headLine.style.float = 'left';
+        headLine.style.marginLeft = '5px';
+        headLine.style.marginTop = '5px';
+        headLine.style.display = 'block';
+        headLine.style.width = '100%';
+        headLine.innerHTML = txt;
+        choseSkinContent.append(headLine);
     }
     function addSkinToModal(url) {
         let skinIMG = document.createElement('img');
         skinIMG.setAttribute('src', url);
-        skinIMG.setAttribute('onclick', `changeSkin("${url}", "${why}")`);
+        skinIMG.setAttribute('onclick', `changeSkin('${url}', '${why}')`);
         skinIMG.style.cursor = 'pointer';
         skinIMG.style.height = '40px';
         skinIMG.style.weight = '40px';

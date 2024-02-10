@@ -1,23 +1,25 @@
 details {
     background-color: black;
     color: #FFF;
-    width: 312px;
+    width: 304px;
     margin: auto;
     margin-top: 35px;
-    margin-bottom: 0px;
-    border: 3px solid #FFF;
+    margin-bottom: 5px;
+    outline: 3px solid #FFF;
 }
 details > summary {
     cursor: pointer;
     padding-top: 4px;
     padding-bottom: 4px;
     list-style-type: none;
+    border-width: 0px;
     -webkit-tap-highlight-color: transparent;
 }
 details[open] > summary {
     color: black; 
     background-color: #FFF;
     list-style-type: none;
+    border-width: 0px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -26,7 +28,7 @@ details[open] > summary {
     font-size: 15px;
     background-color: black;
     color: #FFF;
-    width: 312px;
+    width: 304px;
     margin: auto;
     margin-top: 35px;
     margin-bottom: 0px;

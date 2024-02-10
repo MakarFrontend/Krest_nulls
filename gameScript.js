@@ -4,23 +4,26 @@
 1 - people
 2 - computer
 */
-let mapForMe = [0, 1, 2,
-                3, 4, 5,
-                6, 7, 8];
-let map = [0, 0, 0, 0, 0, 0, 0, 0, 0]; //Карта игрового поля
+let mapForMe = [0, 1, 2, 3,
+                4, 5, 6, 7,
+                8, 9, 10, 11,
+                12, 13, 14, 15];
+let map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0 /**/]; //Карта игрового поля
+sessionStorage.setItem('map', JSON.stringify(map));
 let button = document.getElementById('doButton'); //Кнопка второго, заново
 let conditionAlwaysSecond = localStorage.getItem('alwaysSecond') || false; //Состояние второго всегда
-if (conditionAlwaysSecond === 'false') {
+
+if (conditionAlwaysSecond === 'false') { //Переводим строки в логику
     conditionAlwaysSecond = false;
 } else if (conditionAlwaysSecond === 'true') {
     conditionAlwaysSecond = true;
 }
 
-if (localStorage.getItem('alwaysSecond') == 'true') {
+if (localStorage.getItem('alwaysSecond') == 'true') { //Если Всегда второй включён
     computerPlay();
 }
 
-function alwaysSecond(inn) {
+function alwaysSecond(inn) { //При нажатии на всегда второй, заново
     if (inn === 'Отключено') {
         document.querySelector('#conditionAlwaysSecond').innerHTML = 'Включено';
         document.querySelector('#conditionAlwaysSecond').style.color = '#00FF00';
@@ -29,7 +32,7 @@ function alwaysSecond(inn) {
         button.innerHTML = 'Заново';
         conditionAlwaysSecond = true;
         localStorage.setItem('alwaysSecond', 'true');
-        if (map.join(' ') == '0 0 0 0 0 0 0 0 0') {
+        if (map.join(' ') == '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0') {
             computerPlay();
         }
     } else {
@@ -40,11 +43,11 @@ function alwaysSecond(inn) {
     }
 }
 
-function closeGameRezult(whichDiag) {
+function closeGameRezult(whichDiag) { //Закрытие результата
     document.getElementById(whichDiag).close();
 }
 
-function gameRezult(what) {
+function gameRezult(what) { //Показывает результат игры
     let TXTWinOverNobody = document.getElementById('TXTWinOverNobody');
     TXTWinOverNobody.innerHTML = `<strong>${what}</strong>`;
     if (what == 'Ничья') {
@@ -75,7 +78,7 @@ function doButton(ev) { //Кнопка хода второго, Заново
 
 function againInMain() { //Заново
     let e = 0;
-    while (e < 9) {
+    while (e < 16) {
         document.getElementById(`item_${e}`).style.background = '#000';
         document.getElementById(`item_${e}`).style.backgroundSize = 'cover';
         document.getElementById(`item_${e}`).setAttribute('onclick', `Play(${e})`);
@@ -86,14 +89,16 @@ function againInMain() { //Заново
         button.setAttribute('onclick', `doButton("ag")`);
         button.innerHTML = 'Заново';
         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
-        map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        sessionStorage.setItem('map', JSON.stringify(map));
         computerPlay();
     } else {
         button.removeAttribute('onclick');
         button.setAttribute('onclick', `doButton("second")`);
         button.innerHTML = 'Ходить вторым';
         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
-        map = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        sessionStorage.setItem('map', JSON.stringify(map));
     }
 }
 
@@ -101,196 +106,219 @@ function checkWin(team) { //Проверка на победу
     function checkNobody() { //Функция Проверки ничьи
         let i = 0;
         let check = 0;
-        while (i < 9) {
+        while (i < 16) {
             let itemNow = map[i];
             if ((itemNow == 1) || (itemNow == 2)) {
                 check++;
             }
             i++;
         }
-        if (check == 9) {
+        if (check == 16) {
             return true;
         } else {
             return false;
         }
     }
+
+    /*Функции проверки победы по: 
+        горизонтали
+        вертикали
+        диагонали*/
+    function checkHorizontal(k) { //Поверка победы по горизонтали
+        let chHo = 0;
+        while (chHo < 4) {
+            if ((map[k] == team) && (map[k + 1] == team) && (map[k + 2] == team)) {
+                return true;
+            }
+            chHo++;
+            k = k + 4;
+        }
+        return false;
+    }
+    function checkVertical(k) { //Поверка победы по вертикали
+        let chVe = 0; //
+        while (chVe < 4) {
+            if ((map[k] == team) && (map[k + 4] == team) && (map[k + 8] == team)) {
+                return true;
+            }
+            chVe++;
+            k = k + 1;
+        }
+        return false;
+    }
+    function checkDiagonal(k, side) { //Проверка победы по диагонали
+        if ((map[k] == team) && (map[k + side] == team) && (map[k + (side*2)] == team)) {
+            return true;
+        }
+        return false;
+    }
+
+    let option_left_ho = checkHorizontal(0); //Варианты слева, горизонталь
+    let option_right_ho = checkHorizontal(1); //Варианты справа, горизонталь
+    /**/
+    let option_top_ve = checkVertical(0); //Вертикали сверху
+    let option_down_ve = checkVertical(4); //Вертикали снизу
+    /*Диагонали слева направо*/
+    let option_0_5_10_di = checkDiagonal(0, 5)
+    let option_5_10_15_di = checkDiagonal(5, 5)
+    let option_4_9_14_di = checkDiagonal(4, 5)
+    let option_1_6_11_di = checkDiagonal(1, 5)
+    /*Диагонали справо налево*/
+    let option_2_5_8_di = checkDiagonal(2, 3)
+    let option_3_6_9_di = checkDiagonal(3, 3)
+    let option_6_9_12_di = checkDiagonal(6, 3)
+    let option_7_10_13_di = checkDiagonal(7, 3)
+    /*Если выигрыш*/
+    if ((option_left_ho == true) || (option_right_ho == true) || //Горизонтали
+        (option_top_ve == true) || (option_down_ve == true) || //Вертикали
+        (option_0_5_10_di == true) || (option_5_10_15_di == true) || //Диагонали
+        (option_4_9_14_di == true) || (option_1_6_11_di == true) ||
+        (option_2_5_8_di == true) || (option_3_6_9_di == true) ||
+        (option_6_9_12_di == true) || (option_7_10_13_di == true)) { 
+        return true;
+    }
+
     let checkNobodyRezult = checkNobody();
-    if ((map[0] == team)&&(map[1] == team)&&(map[2] == team)) {return true;} //0-1-2
-    if ((map[3] == team)&&(map[4] == team)&&(map[5] == team)) {return true;} //3-4-5
-    if ((map[6] == team)&&(map[7] == team)&&(map[8] == team)) {return true;} //6-7-8
-
-    if ((map[0] == team)&&(map[3] == team)&&(map[6] == team)) {return true;} //0-3-6
-    if ((map[1] == team)&&(map[4] == team)&&(map[7] == team)) {return true;} //1-4-7
-    if ((map[2] == team)&&(map[5] == team)&&(map[8] == team)) {return true;} //2-5-8
-
-    if ((map[2] == team)&&(map[4] == team)&&(map[6] == team)) {return true;} //Диагональ вверх
-    if ((map[0] == team)&&(map[4] == team)&&(map[8] == team)) {return true;} //Диагональ вниз
-
-    if (checkNobodyRezult == true) {let g = null; return g;}
-
+    if (checkNobodyRezult == true) { //Если ничья
+        let g = null;
+        return g;}
     return false;
 }
 
 
 function computerPlay() { //Компьютер играет
-    let e = localStorage.getItem('computer') || 'krest.png';
-    let computerSkin = `url(${e})`; //Скин компьютера
+    let e = localStorage.getItem('computer') || 'krest.png'; //Файл скина из памяти
+    let computerSkin = `url(${e})`; //Скин компьютера с url
     function computerCanWin(where) { //Компьютер сделал выбор
         document.getElementById(`item_${where}`).style.backgroundImage = computerSkin;
         document.getElementById(`item_${where}`).removeAttribute('onclick');
         map[where] = 2;
+        sessionStorage.setItem('map', JSON.stringify(map));
     }
+
+    let r;
+    let k = 0;
+    /*Проверяем горизонталь на возможность победы*/
+    while (k <= 12) {
+        if ((map[k] == 2) && (map[k + 1] == 2) && (map[k + 2] == 0)) {
+            r = k + 2;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 2) && (map[k + 1] == 0) && (map[k + 2] == 2)) {
+            r = k + 1;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 0) && (map[k + 1] == 2) && (map[k + 2] == 2)) {
+            r = k;
+            computerCanWin(r);
+            return;
+        }
+        k = k + 4;
+    }
+    k = 1;
+    while (k < 13) {
+        if ((map[k] == 2) && (map[k + 1] == 2) && (map[k + 2] == 0)) {
+            r = k + 2;
+            computerCanWin(r);
+            return;
+        }
+        if ((map[k] == 2) && (map[k + 1] == 0) && (map[k + 2] == 2)) {
+            r = k + 1;
+            computerCanWin(r);
+            return;
+        }
+        if ((map[k] == 0) && (map[k + 1] == 2) && (map[k + 2] == 2)) {
+            r = k;
+            computerCanWin(r);
+            return;
+        }
+        k = k + 4;
+    }
+    /*Проверка горизонтали окончена*/
+    /**/
+    /*Проверяем вертикаль на возможность победы*/
+    k = 0;
+    let iForVerticalCheck = 0;
+    while (iForVerticalCheck <= 4) {
+        if ((map[k] == 2) && (map[k + 4] == 2) && (map[k + 8] == 0)) {
+            r = k + 8;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 2) && (map[k + 4] == 0) && (map[k + 8] == 2)) {
+            r = k + 4;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 0) && (map[k + 4] == 2) && (map[k + 8] == 2)) {
+            r = k;
+            computerCanWin(r);
+            return;
+        }
+        k = k + 1;
+        iForVerticalCheck += 1;
+    }
+    k = 4;
+    iForVerticalCheck = 0;
+    while (iForVerticalCheck <= 4) {
+        if ((map[k] == 2) && (map[k + 4] == 2) && (map[k + 8] == 0)) {
+            r = k + 8;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 2) && (map[k + 4] == 0) && (map[k + 8] == 2)) {
+            r = k + 4;
+            computerCanWin(r);
+            return;
+        } else if ((map[k] == 0) && (map[k + 4] == 2) && (map[k + 8] == 2)) {
+            r = k;
+            computerCanWin(r);
+            return;
+        }
+        k = k + 1;
+        iForVerticalCheck += 1;
+    }
+    /*Проверка вертикали окончена*/
+    /**/
+    /*Проверка диагонали на возможность победы*/
+    function checkDiagonalForWin(start, step) {
+        let shot;
+        if ((map[start] == 2) && (map[start + step] == 2) && (map[start + (step*2)] == 0)) {
+            shot = start + (step*2);
+            computerCanWin(shot);
+            return true;
+        } else if ((map[start] == 2) && (map[start + step] == 0) && (map[start + (step*2)] == 2)) {
+            shot = start + step;
+            computerCanWin(shot);
+            return true;
+        } else if ((map[start] == 0) && (map[start + step] == 2) && (map[start + (step*2)] == 2)) {
+            shot = start;
+            computerCanWin(shot);
+            return true;
+        }
+        return false;
+    }
+    let win_di_0 = checkDiagonalForWin(0, 5);
+    let win_di_1 = checkDiagonalForWin(5, 5);
+    let win_di_2 = checkDiagonalForWin(4, 5);
+    let win_di_3 = checkDiagonalForWin(1, 5);
+    let win_di_4 = checkDiagonalForWin(2, 3);
+    let win_di_5 = checkDiagonalForWin(3, 3);
+    let win_di_6 = checkDiagonalForWin(6, 3);
+    let win_di_7 = checkDiagonalForWin(7, 3);
+    //Если победили по горизонтали
+    if (win_di_0 || win_di_1 || win_di_2 || win_di_3 || win_di_4 || win_di_5 || win_di_6 || win_di_7) {
+        return;
+    }
+    /*Проверка диагонали окончена*/
+
     function computerWin() {
-        //Горизонталь
-        //По горизонтали вариант 0-1-2 победа
-        if ( ((map[0] == 2 && map[1] == 2) && (map[2] == 0)) ) {
-            computerCanWin(2);
-        } else if ( ((map[0] == 2 && map[2] == 2) && (map[1] == 0)) ) {
-            computerCanWin(1);
-        } else if ( ((map[1] == 2 && map[2] == 2) && (map[0] == 0)) ) {
-            computerCanWin(0);
-        }
-        //По горизонтали вариант 3-4-5 победа
-        else if ( ((map[3] == 2 && map[4] == 2) && (map[5] == 0)) ) {
-            computerCanWin(5);
-        } else if ( ((map[3] == 2 && map[5] == 2) && (map[4] == 0)) ) {
-            computerCanWin(4);
-        } else if ( ((map[4] == 2 && map[5] == 2) && (map[3] == 0)) ) {
-            computerCanWin(3);
-        }
-        //По горизонтали вариант 6-7-8 победа
-        else if ( ((map[6] == 2 && map[7] == 2) && (map[8] == 0)) ) {
-            computerCanWin(8);
-        } else if ( ((map[6] == 2 && map[8] == 2) && (map[7] == 0)) ) {
-            computerCanWin(7);
-        } else if ( ((map[7] == 2 && map[8] == 2) && (map[6] == 0)) ) {
-            computerCanWin(6);
-        }
-        //Вертикаль
-        //По вертикали вариант 0-3-6 победа
-        else if ( ((map[0] == 2 && map[3] == 2) && (map[6] == 0)) ) {
-            computerCanWin(6);
-        } else if ( ((map[0] == 2 && map[6] == 2) && (map[3] == 0)) ) {
-            computerCanWin(3);
-        } else if ( ((map[3] == 2 && map[6] == 2) && (map[0] == 0)) ) {
-            computerCanWin(0);
-        }
-        //По вертикали вариант 1-4-7 победа
-        else if ( ((map[1] == 2 && map[4] == 2) && (map[7] == 0)) ) {
-            computerCanWin(7);
-        } else if ( ((map[1] == 2 && map[7] == 2) && (map[4] == 0)) ) {
-            computerCanWin(4);
-        } else if ( ((map[4] == 2 && map[7] == 2) && (map[1] == 0)) ) {
-            computerCanWin(1);
-        }
-        //По вертикали вариант 2-5-8 победа
-        else if ( ((map[2] == 2 && map[5] == 2) && (map[8] == 0)) ) {
-            computerCanWin(8);
-        } else if ( ((map[2] == 2 && map[8] == 2) && (map[5] == 0)) ) {
-            computerCanWin(5);
-        } else if ( ((map[5] == 2 && map[8] == 2) && (map[2] == 0)) ) {
-            computerCanWin(2);
-        }
-        //Диагонали
-        //Вариант 2-4-6 победа
-        else if ( ((map[2] == 2 && map[4] == 2) && (map[6] == 0)) ) {
-            computerCanWin(6);
-        } else if ( ((map[2] == 2 && map[6] == 2) && (map[4] == 0)) ) {
-            computerCanWin(4);
-        } else if ( ((map[4] == 2 && map[6] == 2) && (map[2] == 0)) ) {
-            computerCanWin(2);
-        }
-        //Вариант 0-4-8 победа
-        else if ( (map[0] == 2 && map[4] == 2 && map[8] == 0) ) {
-            computerCanWin(8);
-        } else if ( ((map[0] == 2 && map[8] == 2) && (map[4] == 0)) ) {
-            computerCanWin(4);
-        } else if ( ((map[4] == 2 && map[8] == 2) && (map[0] == 0)) ) {
-            computerCanWin(0);
-        }
-        //
-        //
-        //
-        //Не даём выиграть человеку
-        //
-        //Диагонали
-        //Вариант 2-4-6 человек
-        //
-        else if (((map[2] == 1 && map[4] == 1) && (map[6] == 0))) {
-            computerCanWin(6);
-        } else if (((map[2] == 1 && map[6] == 1) && (map[4] == 0))) {
-            computerCanWin(4);
-        } else if (((map[4] == 1 && map[6] == 1) && (map[2] == 0))) {
-            computerCanWin(2);
-        }
-        //Вариант 0-4-8 человек
-        else if ((map[0] == 1 && map[4] == 1) && (map[8] == 0)) {
-            computerCanWin(8);
-        } else if (((map[0] == 1 && map[8] == 1) && (map[4] == 0))) {
-            computerCanWin(4);
-        } else if (((map[4] == 1 && map[8] == 1) && (map[0] == 0))) {
-            computerCanWin(0);
-        }
-        //Горизонталь
-        //По горизонтали вариант 0-1-2 человек
-        else if (((map[0] == 1 && map[1] == 1) && (map[2] == 0))) {
-            computerCanWin(2);
-        } else if (((map[0] == 1 && map[2] == 1) && (map[1] == 0))) {
-            computerCanWin(1);
-        } else if (((map[1] == 1 && map[2] == 1) && (map[0] == 0))) {
-            computerCanWin(0);
-        }
-        //По горизонтали вариант 3-4-5 человек
-        else if (((map[3] == 1 && map[4] == 1) && (map[5] == 0))) {
-            computerCanWin(5);
-        } else if (((map[3] == 1 && map[5] == 1) && (map[4] == 0))) {
-            computerCanWin(4);
-        } else if (((map[4] == 1 && map[5] == 1) && (map[3] == 0))) {
-            computerCanWin(3);
-        }
-        //По горизонтали вариант 6-7-8 человек
-        else if (((map[6] == 1 && map[7] == 1) && (map[8] == 0))) {
-            computerCanWin(8);
-        } else if (((map[6] == 1 && map[8] == 1) && (map[7] == 0))) {
-            computerCanWin(7);
-        } else if (((map[7] == 1 && map[8] == 1) && (map[6] == 0))) {
-            computerCanWin(6);
-        }
-        //Вертикаль
-        //По вертикали вариант 0-3-6 человек
-        else if (((map[0] == 1 && map[3] == 1) && (map[6] == 0))) {
-            computerCanWin(6);
-        } else if (((map[0] == 1 && map[6] == 1) && (map[3] == 0))) {
-            computerCanWin(3);
-        } else if (((map[3] == 1 && map[6] == 1) && (map[0] == 0))) {
-            computerCanWin(0);
-        }
-        //По вертикали вариант 1-4-7 человек
-        else if (((map[1] == 1 && map[4] == 1) && (map[7] == 0))) {
-            computerCanWin(7);
-        } else if (((map[1] == 1 && map[7] == 1) && (map[4] == 0))) {
-            computerCanWin(4);
-        } else if (((map[4] == 1 && map[7] == 1) && (map[1] == 0))) {
-            computerCanWin(1);
-        }
-        //По вертикали вариант 2-5-8 человек
-        else if (((map[2] == 1 && map[5] == 1) && (map[8] == 0))) {
-            computerCanWin(8);
-        } else if (((map[2] == 1 && map[8] == 1) && (map[5] == 0))) {
-            computerCanWin(5);
-        } else if (((map[5] == 1 && map[8] == 1) && (map[2] == 0))) {
-            computerCanWin(2);
-        } else {
-            let i = 1;
-            let shoot;
-            while (i == 1) {
-                shoot = Math.floor(Math.random() *  9);
-                if (map[shoot] == 0) {
-                    i++;
-                }
+        let i = 1;
+        let shoot;
+        while (i == 1) {
+            shoot = Math.floor(Math.random() * 16);
+            if (map[shoot] == 0) {
+                i++;
             }
-            computerCanWin(shoot);
         }
+        computerCanWin(shoot);
     }
     computerWin();
 }
@@ -302,10 +330,11 @@ function peoplePlay(id) { //Ход человека
     document.getElementById(`item_${id}`).style.backgroundImage = peopleSkin;
     document.getElementById(`item_${id}`).removeAttribute('onclick');
     map[id] = 1;
+    sessionStorage.setItem('map', JSON.stringify(map));
 }
 
 
-function appToLocalStorage(event) {
+function appToLocalStorage(event) { //Запись в память результата и обновление статистики
     let ball = Number(localStorage.getItem(event)); //Запись в память
     ball++;
     localStorage.setItem(String(event), String(ball));
@@ -340,7 +369,7 @@ function Play(id) {
         gameRezult('Победа');
         whyPlayNow.innerHTML = 'Победа';
         let e = 0;
-        while (e < 9) {
+        while (e < 16) {
             document.getElementById(`item_${e}`).removeAttribute('onclick');
             e++;
         }
@@ -359,7 +388,7 @@ function Play(id) {
                 gameRezult('Поражение');
                 whyPlayNow.innerHTML = 'Поражение';
                 let e = 0;
-                while (e < 9) {
+                while (e < 16) {
                     document.getElementById(`item_${e}`).removeAttribute('onclick');
                     e++;
                 }

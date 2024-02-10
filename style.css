@@ -26,6 +26,12 @@ p {
     font-size: 15px;
     text-align: center;
 }
+p:empty {
+    display: inline-block;
+    height: 15px;
+    margin: 0px;
+    width: 100%;
+}
 img {
     background-size: cover;
 }
@@ -41,18 +47,19 @@ dialog {
     display: block;
     width: 312px;
     height: 312px;
-    margin: 0px;
+    margin: 0 auto;
+    padding: 0px;
     margin-left: auto;
     margin-right: auto;
 }
 .gameLi {
     display: inline-block;
     border-width: 0px;
-    margin: 0px;
+    margin: 0%;
     padding: 0px;
     outline: 3px solid #FFF;
-    height: 101px;
-    width: 101px;
+    height: 74px;
+    width: 74px;
     background-size: cover;
     background-color: black;
     cursor: pointer;
