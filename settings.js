@@ -58,11 +58,11 @@ function changeSkin(url, why) {
     if (why == '1') {
         localStorage.setItem('people', url);
         document.getElementById('peopleSkinChange').setAttribute('src', localStorage.getItem('people'));
-        changeGameLiBack(1);
+        changeGameLiBack('1');
     } else {
         localStorage.setItem('computer', url);
         document.getElementById('computerSkinChange').setAttribute('src', localStorage.getItem('computer'));
-        changeGameLiBack(2);
+        changeGameLiBack('2');
     }
 }
 
@@ -103,5 +103,24 @@ function clickForChangeSkin(why) {
     planetSkins.forEach((item) => addSkinToModal(item.URL));
 
     choseSkinDiag.style.height = '120px';
+    document.body.style.filter = 'blur(2px)';
     choseSkinDiag.showModal();
+}
+
+function reset() {
+    localStorage.removeItem('people');
+    localStorage.removeItem('computer');
+    localStorage.removeItem('wins');
+    localStorage.removeItem('overs');
+    localStorage.removeItem('nos');
+    document.querySelector('#conditionAlwaysSecond').innerHTML = 'Отключено';
+    document.querySelector('#conditionAlwaysSecond').style.color = '#FF0000';
+    localStorage.setItem('alwaysSecond', 'false');
+    document.querySelector('#wins').innerHTML = '0';
+    document.querySelector('#overs').innerHTML = '0';
+    document.querySelector('#nos').innerHTML = '0';
+    document.getElementById('peopleSkinChange').setAttribute('src', "null.png");
+    document.getElementById('computerSkinChange').setAttribute('src', "krest.png");
+    changeSkin("null.png", '1');
+    changeSkin("krest.png", '2');
 }

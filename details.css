@@ -5,6 +5,7 @@ details {
     margin: auto;
     margin-top: 35px;
     margin-bottom: 5px;
+    padding-bottom: 2px;
     outline: 3px solid #FFF;
 }
 details > summary {
@@ -37,6 +38,7 @@ details[open] > summary {
     padding-top: 4px;
     padding-bottom: 4px;
     text-align: center;
+    border-width: 0px;
     outline: 3px solid #FFF;
     cursor: pointer;
 }

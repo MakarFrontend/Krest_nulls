@@ -49,6 +49,7 @@ dialog {
     height: 312px;
     margin: 0 auto;
     padding: 0px;
+    padding-left: 4px;
     margin-left: auto;
     margin-right: auto;
 }

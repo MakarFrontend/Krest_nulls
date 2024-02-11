@@ -44,6 +44,7 @@ function alwaysSecond(inn) { //При нажатии на всегда втор�
 }
 
 function closeGameRezult(whichDiag) { //Закрытие результата
+    document.body.style.filter = 'blur(0px)';
     document.getElementById(whichDiag).close();
 }
 
@@ -57,6 +58,7 @@ function gameRezult(what) { //Показывает результат игры
     } else if (what == 'Поражение') {
         TXTWinOverNobody.style.color = '#FF0000';
     }
+    document.body.style.filter = 'blur(2px)';
     document.getElementById('WinOverNobody').showModal();
 }
 
@@ -185,7 +187,6 @@ function checkWin(team) { //Проверка на победу
     return false;
 }
 
-
 function computerPlay() { //Компьютер играет
     let e = localStorage.getItem('computer') || 'krest.png'; //Файл скина из памяти
     let computerSkin = `url(${e})`; //Скин компьютера с url
@@ -308,8 +309,155 @@ function computerPlay() { //Компьютер играет
         return;
     }
     /*Проверка диагонали окончена*/
+    /**/
+    /**/
+    /*Не даём человеку выиграть*/
+    let peopleNotWin = 0; //Срабатола ли функция снизу. 0 - нет, 1 - да
+    ;(function peopleNoWin() {
+        let r;
+        let k = 0;
+        /*Проверяем горизонталь не даём её человеку*/
+        while (k <= 12) {
+            if ((map[k] == 1) && (map[k + 1] == 1) && (map[k + 2] == 0)) {
+                r = k + 2;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 1) && (map[k + 1] == 0) && (map[k + 2] == 1)) {
+                r = k + 1;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 0) && (map[k + 1] == 1) && (map[k + 2] == 1)) {
+                r = k;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            k = k + 4;
+        }
+        k = 1;
+        while (k < 13) {
+            if ((map[k] == 1) && (map[k + 1] == 1) && (map[k + 2] == 0)) {
+                r = k + 2;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            if ((map[k] == 1) && (map[k + 1] == 0) && (map[k + 2] == 1)) {
+                r = k + 1;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            if ((map[k] == 0) && (map[k + 1] == 1) && (map[k + 2] == 1)) {
+                r = k;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            k = k + 4;
+        }
+        /*Проверка горизонтали окончена*/
+        /**/
+        /*Проверяем вертикаль не даём её человеку*/
+        k = 0;
+        let iForVerticalCheck = 0;
+        while (iForVerticalCheck <= 4) {
+            if ((map[k] == 1) && (map[k + 4] == 1) && (map[k + 8] == 0)) {
+                r = k + 8;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 1) && (map[k + 4] == 0) && (map[k + 8] == 1)) {
+                r = k + 4;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 0) && (map[k + 4] == 1) && (map[k + 8] == 1)) {
+                r = k;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            k = k + 1;
+            iForVerticalCheck += 1;
+        }
+        k = 4;
+        iForVerticalCheck = 0;
+        while (iForVerticalCheck <= 4) {
+            if ((map[k] == 1) && (map[k + 4] == 1) && (map[k + 8] == 0)) {
+                r = k + 8;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 1) && (map[k + 4] == 0) && (map[k + 8] == 1)) {
+                r = k + 4;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            } else if ((map[k] == 0) && (map[k + 4] == 1) && (map[k + 8] == 1)) {
+                r = k;
+                peopleNotWin++;
+                computerCanWin(r);
+                return;
+            }
+            k = k + 1;
+            iForVerticalCheck += 1;
+        }
+        /*Проверка вертикали окончена*/
+        /**/
+        /*Проверка диагонали не даём её человеку*/
+        function checkDiagonalForWin(start, step) {
+            let shot;
+            if ((map[start] == 1) && (map[start + step] == 1) && (map[start + (step*2)] == 0)) {
+                shot = start + (step*2);
+                peopleNotWin++;
+                return shot;
+            } else if ((map[start] == 1) && (map[start + step] == 0) && (map[start + (step*2)] == 1)) {
+                shot = start + step;
+                peopleNotWin++;
+                return shot;
+            } else if ((map[start] == 0) && (map[start + step] == 1) && (map[start + (step*2)] == 1)) {
+                shot = start;
+                peopleNotWin++;
+                return shot;
+            }
+            return 'false';
+        }
+        let win_di_0 = checkDiagonalForWin(0, 5);
+        let win_di_1 = checkDiagonalForWin(5, 5);
+        let win_di_2 = checkDiagonalForWin(4, 5);
+        let win_di_3 = checkDiagonalForWin(1, 5);
+        let win_di_4 = checkDiagonalForWin(2, 3);
+        let win_di_5 = checkDiagonalForWin(3, 3);
+        let win_di_6 = checkDiagonalForWin(6, 3);
+        let win_di_7 = checkDiagonalForWin(7, 3);
+        //Если победили по диагонали
+        if (win_di_0 !== 'false') {
+            computerCanWin(win_di_0);
+        } else if (win_di_1 !== 'false') {
+            computerCanWin(win_di_1);
+        }
+        /**/ else if (win_di_2 !== 'false') {
+            computerCanWin(win_di_2);
+        } else if (win_di_3 !== 'false') {
+            computerCanWin(win_di_3);
+        }
+        /**/ else if (win_di_4 !== 'false') {
+            computerCanWin(win_di_4);
+        } else if (win_di_5 !== 'false') {
+            computerCanWin(win_di_5);
+        }
+        /**/ else if (win_di_6 !== 'false') {
+            computerCanWin(win_di_6);
+        } else if (win_di_7 !== 'false') {
+            computerCanWin(win_di_7);
+        }
+        /*Проверка диагонали окончена*/
+    })()
 
-    function computerWin() {
+    if (peopleNotWin == 0) {
         let i = 1;
         let shoot;
         while (i == 1) {
@@ -320,9 +468,7 @@ function computerPlay() { //Компьютер играет
         }
         computerCanWin(shoot);
     }
-    computerWin();
 }
-
 
 function peoplePlay(id) { //Ход человека
     let e = localStorage.getItem('people') || 'null.png';
@@ -332,7 +478,6 @@ function peoplePlay(id) { //Ход человека
     map[id] = 1;
     sessionStorage.setItem('map', JSON.stringify(map));
 }
-
 
 function appToLocalStorage(event) { //Запись в память результата и обновление статистики
     let ball = Number(localStorage.getItem(event)); //Запись в память
@@ -352,7 +497,6 @@ function appToLocalStorage(event) { //Запись в память резуль�
     document.getElementById('overs').innerHTML = overs;
     document.getElementById('nos').innerHTML = nos;
 }
-
 
 function Play(id) {
     document.getElementById('plug').style.display = 'block';

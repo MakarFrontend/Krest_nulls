@@ -80,7 +80,7 @@
                 </div>
 
                 <p></p>
-                <p style="text-align: left; margin-top: 0px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px;">
+                <p style="text-align: left; margin-bottom: 0px; margin-top: 0px; margin-left: 5px; margin-right: 5px;">
                     Всегда второй: 
                     <span id="conditionAlwaysSecond" onclick="alwaysSecond(this.innerHTML)" style="color: #FF0000;">Отключено</span>
                 </p>
@@ -110,8 +110,31 @@
                 </summary>
                 <p style="color: #00FF00;">Победы: <span id="wins"></span>%</p>
                 <p style="color: #FF0000;">Поражения: <span id="overs"></span>%</p>
-                <p style="color: #FFF;">Ничьи: <span id="nos"></span>%</p>
+                <p style="color: #FFF; margin-bottom: 0px;">Ничьи: <span id="nos"></span>%</p>
             </details>
+
+            <!--Как играть-->
+            <details open>
+                <summary style="font-size: 15px;" onclick="summaryFunc('howPlay')">
+                    <img id="listSummaryhowPlay" src="toClose.png" style="height: 15px; width: 15px;">
+                    <span style="margin-left: 10px;">Как играть?</span>
+                </summary>
+                <p style="margin-bottom: 5px;">Как победить?</p>
+                <p style="text-align: left; padding: 0 5px; margin-top: 0px;">Что бы победить вам надо выставить 3 своих скина в ряд. 
+                </br>Либо по горизонтали, либо по вертикали, либо по диагонали.</p>
+                <!---->
+                <p style="margin-bottom: 5px;">Как изменить скин?</p>
+                <p style="text-align: left; padding: 0 5px; margin-top: 0px;">Для изменения скина зайдите в настройки.</br> 
+                    Потом нажмите на картинку рядом с надписью "Вы" или "Компьютер", в зависимости от того, чей скин вы хотите изменить.</br>
+                    После нажатия откроется модальное с коллекциями скинов.</br> Выберите там нужный вам скин.</p>
+                <!---->
+                <p style="margin-bottom: 5px;">О кнопке "Всегда второй"</p>
+                <p style="text-align: left; padding: 0 5px; margin-top: 0px;">Если вы нажмёте на красную или зелёную надпись(
+                    "Отключено" и "Включено" соответственно).</br> То вы будете либо играть вторым по умолчанию, либо нет.</br></p>
+            </details>
+
+            <!--Сброс настроек и аналитики-->
+            <button onclick="reset()" class="doButton" style="margin-bottom: 10px;">Сброс</button>
         </main>
 
         <!--Скрипты-->
