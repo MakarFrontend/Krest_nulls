@@ -36,10 +36,10 @@ baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat, plus);
 dotSkins.push(spiralDot, smileDot, kvadratDot, dotOnly);
 planetSkins.push(earthP, moonP, jupiterP, satyrnP);
 
-function changeSkin(url, why) {
+function changeSkin(url, why) { //Меняем скин при нажатии
     let mapInSettings = JSON.parse(sessionStorage.getItem('map'));
 
-    function changeGameLiBack(whyPl) {
+    function changeGameLiBack(whyPl) { //Меняем скин в поле
         let i = 0;
         while (i < 16) {
             if (whyPl == '1') {
@@ -93,6 +93,14 @@ function clickForChangeSkin(why) {
 
     choseSkinContent.innerHTML = '';
 
+    switch (why) {
+        case 1:
+            createHeadline('Ваш скин:');
+            break;
+        case 2:
+            createHeadline('Скин компьютера:');
+            break;
+    }
     createHeadline('Базовые скины');
     baseSkins.forEach((item) => addSkinToModal(item.URL));
 
@@ -108,19 +116,10 @@ function clickForChangeSkin(why) {
 }
 
 function reset() {
-    localStorage.removeItem('people');
-    localStorage.removeItem('computer');
     localStorage.removeItem('wins');
     localStorage.removeItem('overs');
     localStorage.removeItem('nos');
-    document.querySelector('#conditionAlwaysSecond').innerHTML = 'Отключено';
-    document.querySelector('#conditionAlwaysSecond').style.color = '#FF0000';
-    localStorage.setItem('alwaysSecond', 'false');
     document.querySelector('#wins').innerHTML = '0';
     document.querySelector('#overs').innerHTML = '0';
     document.querySelector('#nos').innerHTML = '0';
-    document.getElementById('peopleSkinChange').setAttribute('src', "null.png");
-    document.getElementById('computerSkinChange').setAttribute('src', "krest.png");
-    changeSkin("null.png", '1');
-    changeSkin("krest.png", '2');
 }
