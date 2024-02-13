@@ -313,9 +313,7 @@ function computerPlay() { //Компьютер играет
     /**/
     /*Не даём человеку выиграть*/
     let peopleNotWin = 0; //Срабатола ли функция снизу. 0 - нет, 1 - да
-    ;(function peopleNoWin() {
-        let r;
-        let k = 0;
+        k = 0;
         /*Проверяем горизонталь не даём её человеку*/
         while (k <= 12) {
             if ((map[k] == 1) && (map[k + 1] == 1) && (map[k + 2] == 0)) {
@@ -362,7 +360,7 @@ function computerPlay() { //Компьютер играет
         /**/
         /*Проверяем вертикаль не даём её человеку*/
         k = 0;
-        let iForVerticalCheck = 0;
+        iForVerticalCheck = 0;
         while (iForVerticalCheck <= 4) {
             if ((map[k] == 1) && (map[k + 4] == 1) && (map[k + 8] == 0)) {
                 r = k + 8;
@@ -408,7 +406,7 @@ function computerPlay() { //Компьютер играет
         /*Проверка вертикали окончена*/
         /**/
         /*Проверка диагонали не даём её человеку*/
-        function checkDiagonalForWin(start, step) {
+        function checkDiagonalForWinPeople(start, step) {
             let shot;
             if ((map[start] == 1) && (map[start + step] == 1) && (map[start + (step*2)] == 0)) {
                 shot = start + (step*2);
@@ -425,37 +423,44 @@ function computerPlay() { //Компьютер играет
             }
             return 'false';
         }
-        let win_di_0 = checkDiagonalForWin(0, 5);
-        let win_di_1 = checkDiagonalForWin(5, 5);
-        let win_di_2 = checkDiagonalForWin(4, 5);
-        let win_di_3 = checkDiagonalForWin(1, 5);
-        let win_di_4 = checkDiagonalForWin(2, 3);
-        let win_di_5 = checkDiagonalForWin(3, 3);
-        let win_di_6 = checkDiagonalForWin(6, 3);
-        let win_di_7 = checkDiagonalForWin(7, 3);
+        win_di_0 = checkDiagonalForWinPeople(0, 5);
+        win_di_1 = checkDiagonalForWinPeople(5, 5);
+        win_di_2 = checkDiagonalForWinPeople(4, 5);
+        win_di_3 = checkDiagonalForWinPeople(1, 5);
+        win_di_4 = checkDiagonalForWinPeople(2, 3);
+        win_di_5 = checkDiagonalForWinPeople(3, 3);
+        win_di_6 = checkDiagonalForWinPeople(6, 3);
+        win_di_7 = checkDiagonalForWinPeople(7, 3);
         //Если победили по диагонали
         if (win_di_0 !== 'false') {
             computerCanWin(win_di_0);
+            return;
         } else if (win_di_1 !== 'false') {
             computerCanWin(win_di_1);
+            return;
         }
         /**/ else if (win_di_2 !== 'false') {
             computerCanWin(win_di_2);
+            return;
         } else if (win_di_3 !== 'false') {
             computerCanWin(win_di_3);
+            return;
         }
         /**/ else if (win_di_4 !== 'false') {
             computerCanWin(win_di_4);
+            return;
         } else if (win_di_5 !== 'false') {
             computerCanWin(win_di_5);
+            return;
         }
         /**/ else if (win_di_6 !== 'false') {
             computerCanWin(win_di_6);
+            return;
         } else if (win_di_7 !== 'false') {
             computerCanWin(win_di_7);
+            return;
         }
         /*Проверка диагонали окончена*/
-    })()
 
     if (peopleNotWin == 0) {
         let i = 1;

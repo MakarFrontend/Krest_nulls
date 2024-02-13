@@ -77,6 +77,6 @@ dialog {
     cursor: pointer;
 }
 
-#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #doButton, #head, .gameLi, img {
+#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #head, .gameLi, img {
     -webkit-tap-highlight-color: transparent;
 }

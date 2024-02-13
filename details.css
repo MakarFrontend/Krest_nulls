@@ -41,4 +41,5 @@ details[open] > summary {
     border-width: 0px;
     outline: 3px solid #FFF;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
