@@ -23,7 +23,7 @@ if (localStorage.getItem('alwaysSecond') == 'true') { //Если Всегда в
     computerPlay();
 }
 
-function alwaysSecond(inn) { //При нажатии на всегда второй, заново
+function alwaysSecond(inn) { //При нажатии на всегда второй
     if (inn === 'Отключено') {
         document.querySelector('#conditionAlwaysSecond').innerHTML = 'Включено';
         document.querySelector('#conditionAlwaysSecond').style.color = '#00FF00';
@@ -188,6 +188,7 @@ function checkWin(team) { //Проверка на победу
 }
 
 function computerPlay() { //Компьютер играет
+    let complexityInGameScriptJS = localStorage.getItem('complexity'); //Сложность
     let e = localStorage.getItem('computer') || 'krest.png'; //Файл скина из памяти
     let computerSkin = `url(${e})`; //Скин компьютера с url
     function computerCanWin(where) { //Компьютер сделал выбор
@@ -196,283 +197,76 @@ function computerPlay() { //Компьютер играет
         map[where] = 2;
         sessionStorage.setItem('map', JSON.stringify(map));
     }
-
-    let r;
-    let k = 0;
-    /*Проверяем горизонталь на возможность победы*/
-    while (k <= 12) {
-        if ((map[k] == 2) && (map[k + 1] == 2) && (map[k + 2] == 0)) {
-            r = k + 2;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 2) && (map[k + 1] == 0) && (map[k + 2] == 2)) {
-            r = k + 1;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 0) && (map[k + 1] == 2) && (map[k + 2] == 2)) {
-            r = k;
-            computerCanWin(r);
-            return;
+    function lookingWin(start, step, team) { //Варианты
+        if ((map[start] == team) && (map[start + step] == team) && (map[start + (step*2)] == 0)) {
+            shoot = start + (step*2);
         }
-        k = k + 4;
+        if ((map[start] == team) && (map[start + step] == 0) && (map[start + (step*2)] == team)) {
+            shoot = start + step;
+        }
+        if ((map[start] == 0) && (map[start + step] == team) && (map[start + (step*2)] == team)) {
+            shoot = start;
+        }
     }
-    k = 1;
-    while (k < 13) {
-        if ((map[k] == 2) && (map[k + 1] == 2) && (map[k + 2] == 0)) {
-            r = k + 2;
-            computerCanWin(r);
-            return;
+    function lookBestWin(s) { //Поиск вариантов
+        //lookingWin(start, step, team);
+        /*Горизонталь*/
+        i = 0;
+        while (i <= 12) {
+            lookingWin(i, 1, s);
+            i += 4;
         }
-        if ((map[k] == 2) && (map[k + 1] == 0) && (map[k + 2] == 2)) {
-            r = k + 1;
-            computerCanWin(r);
-            return;
+        i = 1;
+        while (i <= 13) {
+            lookingWin(i, 1, s);
+            i += 4;
         }
-        if ((map[k] == 0) && (map[k + 1] == 2) && (map[k + 2] == 2)) {
-            r = k;
-            computerCanWin(r);
-            return;
+        /*Вертикаль*/
+        i = 0;
+        while (i <= 3) {
+            lookingWin(i, 4, s);
+            i += 1;
         }
-        k = k + 4;
-    }
-    /*Проверка горизонтали окончена*/
-    /**/
-    /*Проверяем вертикаль на возможность победы*/
-    k = 0;
-    let iForVerticalCheck = 0;
-    while (iForVerticalCheck <= 4) {
-        if ((map[k] == 2) && (map[k + 4] == 2) && (map[k + 8] == 0)) {
-            r = k + 8;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 2) && (map[k + 4] == 0) && (map[k + 8] == 2)) {
-            r = k + 4;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 0) && (map[k + 4] == 2) && (map[k + 8] == 2)) {
-            r = k;
-            computerCanWin(r);
-            return;
+        i = 1;
+        while (i <= 7) {
+            lookingWin(i, 4, s);
+            i += 1;
         }
-        k = k + 1;
-        iForVerticalCheck += 1;
-    }
-    k = 4;
-    iForVerticalCheck = 0;
-    while (iForVerticalCheck <= 4) {
-        if ((map[k] == 2) && (map[k + 4] == 2) && (map[k + 8] == 0)) {
-            r = k + 8;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 2) && (map[k + 4] == 0) && (map[k + 8] == 2)) {
-            r = k + 4;
-            computerCanWin(r);
-            return;
-        } else if ((map[k] == 0) && (map[k + 4] == 2) && (map[k + 8] == 2)) {
-            r = k;
-            computerCanWin(r);
-            return;
-        }
-        k = k + 1;
-        iForVerticalCheck += 1;
-    }
-    /*Проверка вертикали окончена*/
-    /**/
-    /*Проверка диагонали на возможность победы*/
-    function checkDiagonalForWin(start, step) {
-        let shot;
-        if ((map[start] == 2) && (map[start + step] == 2) && (map[start + (step*2)] == 0)) {
-            shot = start + (step*2);
-            computerCanWin(shot);
-            return true;
-        } else if ((map[start] == 2) && (map[start + step] == 0) && (map[start + (step*2)] == 2)) {
-            shot = start + step;
-            computerCanWin(shot);
-            return true;
-        } else if ((map[start] == 0) && (map[start + step] == 2) && (map[start + (step*2)] == 2)) {
-            shot = start;
-            computerCanWin(shot);
-            return true;
-        }
-        return false;
-    }
-    let win_di_0 = checkDiagonalForWin(0, 5);
-    let win_di_1 = checkDiagonalForWin(5, 5);
-    let win_di_2 = checkDiagonalForWin(4, 5);
-    let win_di_3 = checkDiagonalForWin(1, 5);
-    let win_di_4 = checkDiagonalForWin(2, 3);
-    let win_di_5 = checkDiagonalForWin(3, 3);
-    let win_di_6 = checkDiagonalForWin(6, 3);
-    let win_di_7 = checkDiagonalForWin(7, 3);
-    //Если победили по горизонтали
-    if (win_di_0 || win_di_1 || win_di_2 || win_di_3 || win_di_4 || win_di_5 || win_di_6 || win_di_7) {
-        return;
-    }
-    /*Проверка диагонали окончена*/
-    /**/
-    /**/
-    /*Не даём человеку выиграть*/
-    let peopleNotWin = 0; //Срабатола ли функция снизу. 0 - нет, 1 - да
-        k = 0;
-        /*Проверяем горизонталь не даём её человеку*/
-        while (k <= 12) {
-            if ((map[k] == 1) && (map[k + 1] == 1) && (map[k + 2] == 0)) {
-                r = k + 2;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 1) && (map[k + 1] == 0) && (map[k + 2] == 1)) {
-                r = k + 1;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 0) && (map[k + 1] == 1) && (map[k + 2] == 1)) {
-                r = k;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            k = k + 4;
-        }
-        k = 1;
-        while (k < 13) {
-            if ((map[k] == 1) && (map[k + 1] == 1) && (map[k + 2] == 0)) {
-                r = k + 2;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            if ((map[k] == 1) && (map[k + 1] == 0) && (map[k + 2] == 1)) {
-                r = k + 1;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            if ((map[k] == 0) && (map[k + 1] == 1) && (map[k + 2] == 1)) {
-                r = k;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            k = k + 4;
-        }
-        /*Проверка горизонтали окончена*/
+        /*Диагональ*/
+        lookingWin(0, 5, s);
+        lookingWin(5, 5, s);
+        lookingWin(1, 5, s);
+        lookingWin(4, 5, s);
         /**/
-        /*Проверяем вертикаль не даём её человеку*/
-        k = 0;
-        iForVerticalCheck = 0;
-        while (iForVerticalCheck <= 4) {
-            if ((map[k] == 1) && (map[k + 4] == 1) && (map[k + 8] == 0)) {
-                r = k + 8;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 1) && (map[k + 4] == 0) && (map[k + 8] == 1)) {
-                r = k + 4;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 0) && (map[k + 4] == 1) && (map[k + 8] == 1)) {
-                r = k;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            k = k + 1;
-            iForVerticalCheck += 1;
-        }
-        k = 4;
-        iForVerticalCheck = 0;
-        while (iForVerticalCheck <= 4) {
-            if ((map[k] == 1) && (map[k + 4] == 1) && (map[k + 8] == 0)) {
-                r = k + 8;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 1) && (map[k + 4] == 0) && (map[k + 8] == 1)) {
-                r = k + 4;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            } else if ((map[k] == 0) && (map[k + 4] == 1) && (map[k + 8] == 1)) {
-                r = k;
-                peopleNotWin++;
-                computerCanWin(r);
-                return;
-            }
-            k = k + 1;
-            iForVerticalCheck += 1;
-        }
-        /*Проверка вертикали окончена*/
-        /**/
-        /*Проверка диагонали не даём её человеку*/
-        function checkDiagonalForWinPeople(start, step) {
-            let shot;
-            if ((map[start] == 1) && (map[start + step] == 1) && (map[start + (step*2)] == 0)) {
-                shot = start + (step*2);
-                peopleNotWin++;
-                return shot;
-            } else if ((map[start] == 1) && (map[start + step] == 0) && (map[start + (step*2)] == 1)) {
-                shot = start + step;
-                peopleNotWin++;
-                return shot;
-            } else if ((map[start] == 0) && (map[start + step] == 1) && (map[start + (step*2)] == 1)) {
-                shot = start;
-                peopleNotWin++;
-                return shot;
-            }
-            return 'false';
-        }
-        win_di_0 = checkDiagonalForWinPeople(0, 5);
-        win_di_1 = checkDiagonalForWinPeople(5, 5);
-        win_di_2 = checkDiagonalForWinPeople(4, 5);
-        win_di_3 = checkDiagonalForWinPeople(1, 5);
-        win_di_4 = checkDiagonalForWinPeople(2, 3);
-        win_di_5 = checkDiagonalForWinPeople(3, 3);
-        win_di_6 = checkDiagonalForWinPeople(6, 3);
-        win_di_7 = checkDiagonalForWinPeople(7, 3);
-        //Если победили по диагонали
-        if (win_di_0 !== 'false') {
-            computerCanWin(win_di_0);
-            return;
-        } else if (win_di_1 !== 'false') {
-            computerCanWin(win_di_1);
-            return;
-        }
-        /**/ else if (win_di_2 !== 'false') {
-            computerCanWin(win_di_2);
-            return;
-        } else if (win_di_3 !== 'false') {
-            computerCanWin(win_di_3);
-            return;
-        }
-        /**/ else if (win_di_4 !== 'false') {
-            computerCanWin(win_di_4);
-            return;
-        } else if (win_di_5 !== 'false') {
-            computerCanWin(win_di_5);
-            return;
-        }
-        /**/ else if (win_di_6 !== 'false') {
-            computerCanWin(win_di_6);
-            return;
-        } else if (win_di_7 !== 'false') {
-            computerCanWin(win_di_7);
-            return;
-        }
-        /*Проверка диагонали окончена*/
-
-    if (peopleNotWin == 0) {
-        let i = 1;
-        let shoot;
-        while (i == 1) {
-            shoot = Math.floor(Math.random() * 16);
-            if (map[shoot] == 0) {
-                i++;
-            }
-        }
-        computerCanWin(shoot);
+        lookingWin(2, 3, s);
+        lookingWin(3, 3, s);
+        lookingWin(6, 3, s);
+        lookingWin(7, 3, s);
     }
+    let shoot; //Выстрел
+    let mx = 0; //Ограничение количества циклов, в зависимости от поля, (3 на 3) || (4 на 4)
+    /*Для начала стреляем в случайное место*/
+    let i = 1; //Счётчик для циклов
+    mx = 16;
+    while (i == 1) {
+        shoot = Math.floor(Math.random() * mx);
+        if (map[shoot] == 0) {
+            i++;
+        }
+    }
+
+    /*Не даём человеку выиграть, сложный режим*/
+    if (complexityInGameScriptJS == '2') {
+        lookBestWin(1);
+    }
+
+    /*Выигрываем по возможности*/
+    if ((complexityInGameScriptJS == '1') || (complexityInGameScriptJS == '2')) {
+        lookBestWin(2);
+    }
+
+    /*Стреляем*/
+    computerCanWin(shoot);
 }
 
 function peoplePlay(id) { //Ход человека

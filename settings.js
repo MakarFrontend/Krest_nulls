@@ -4,37 +4,43 @@ const choseSkinContent = document.getElementById('choseSkinContent'); //Внут
 let renderCondition = false;
 
 class Skin {
-    constructor(URL, price) {
+    constructor(URL) {
         this.URL = URL;
-        this.price = price;
     }
 }
 
-let nulls = new Skin('null.png', 0);
-let krest = new Skin('krest.png', 0);
-let trap = new Skin('trap.png', 0);
-let oval = new Skin('oval.png', 0);
-let treangle = new Skin('treangle.png', 0);
-let romb = new Skin('romb.png', 0);
-let kvadrat = new Skin('kvadrat.png', 0);
-let plus = new Skin('plus.png', 0);
+let nulls = new Skin('null.png');
+let krest = new Skin('krest.png');
+let trap = new Skin('trap.png');
+let oval = new Skin('oval.png');
+let treangle = new Skin('treangle.png');
+let romb = new Skin('romb.png');
+let kvadrat = new Skin('kvadrat.png');
+let plus = new Skin('plus.png');
 
-let kvadratDot = new Skin('kvadratDot.png', 0);
-let spiralDot = new Skin('spiralDot.png', 0);
-let smileDot = new Skin('smileDot.png', 0);
-let dotOnly = new Skin('dotOnly.png', 0);
+let kvadratDot = new Skin('kvadratDot.png');
+let spiralDot = new Skin('spiralDot.png');
+let smileDot = new Skin('smileDot.png');
+let dotOnly = new Skin('dotOnly.png');
 
-let earthP = new Skin('earthDot.png', 0);
-let jupiterP = new Skin('jupiter.png', 0);
-let moonP = new Skin('moonP.png', 0);
-let satyrnP = new Skin('saturnP.png', 0);
+let earthP = new Skin('earthDot.png');
+let jupiterP = new Skin('jupiter.png');
+let moonP = new Skin('moonP.png');
+let satyrnP = new Skin('saturnP.png');
+
+let blob1 = new Skin('blob1.png');
+let blob2 = new Skin('blob2.png');
+let blob3 = new Skin('blob3.png');
+let blob4 = new Skin('blob4.png');
 
 let baseSkins = [];
 let dotSkins = [];
 let planetSkins = [];
+let blobs = [];
 baseSkins.push(nulls, krest, trap, oval, treangle, romb, kvadrat, plus);
 dotSkins.push(spiralDot, smileDot, kvadratDot, dotOnly);
 planetSkins.push(earthP, moonP, jupiterP, satyrnP);
+blobs.push(blob1, blob2, blob3, blob4);
 
 function changeSkin(url, why) { //Меняем скин при нажатии
     let mapInSettings = JSON.parse(sessionStorage.getItem('map'));
@@ -110,6 +116,9 @@ function clickForChangeSkin(why) {
     createHeadline('Планеты');
     planetSkins.forEach((item) => addSkinToModal(item.URL));
 
+    createHeadline('Кляксы');
+    blobs.forEach((item) => addSkinToModal(item.URL));
+
     choseSkinDiag.style.height = '120px';
     document.body.style.filter = 'blur(2px)';
     choseSkinDiag.showModal();
@@ -122,4 +131,24 @@ function reset() {
     document.querySelector('#wins').innerHTML = '0';
     document.querySelector('#overs').innerHTML = '0';
     document.querySelector('#nos').innerHTML = '0';
+}
+
+function complexity(now) {
+    switch (now) {
+        case 'Лёгкий':
+            document.getElementById('complexity').innerHTML = 'Стандартный';
+            document.getElementById('complexity').style.color = '#FFFF00';
+            localStorage.setItem('complexity', '1');
+            break;
+        case 'Стандартный':
+            document.getElementById('complexity').innerHTML = 'Сложный';
+            document.getElementById('complexity').style.color = '#FF0000';
+            localStorage.setItem('complexity', '2');
+            break;
+        case 'Сложный':
+            document.getElementById('complexity').innerHTML = 'Лёгкий';
+            document.getElementById('complexity').style.color = '#00FF00';
+            localStorage.setItem('complexity', '0');
+            break;
+    }
 }

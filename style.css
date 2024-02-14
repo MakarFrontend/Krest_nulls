@@ -67,7 +67,7 @@ dialog {
     cursor: pointer;
 }
 
-#conditionAlwaysSecond {
+#conditionAlwaysSecond, #complexity {
     cursor: pointer;
 }
 
@@ -77,6 +77,6 @@ dialog {
     cursor: pointer;
 }
 
-#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #head, .gameLi, img {
+#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #complexity, #head, .gameLi, img {
     -webkit-tap-highlight-color: transparent;
 }

@@ -84,6 +84,11 @@
                     Всегда второй: 
                     <span id="conditionAlwaysSecond" onclick="alwaysSecond(this.innerHTML)" style="color: #FF0000;">Отключено</span>
                 </p>
+                <p></p>
+                <p style="text-align: left; margin-bottom: 0px; margin-top: 0px; margin-left: 5px; margin-right: 5px;">
+                    Уровень сложности: 
+                    <span id="complexity" onclick="complexity(this.innerHTML)" style="color: #FFFF00;">Стандартный</span>
+                </p>
                 <script>
                     if (localStorage.getItem('alwaysSecond') == 'true') {
                         document.getElementById('conditionAlwaysSecond').style.color = '#00FF00';
@@ -92,6 +97,14 @@
                         document.getElementById('doButton').setAttribute('onclick', `doButton("ag")`);
                         document.getElementById('doButton').innerHTML = 'Заново';
                         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
+                    }
+                    let complexityInIndexHTML = localStorage.getItem('complexity');
+                    if (complexityInIndexHTML === '0') {
+                        document.getElementById('complexity').innerHTML = 'Лёгкий';
+                        document.getElementById('complexity').style.color = '#00FF00';
+                    } else if (complexityInIndexHTML === '2') {
+                        document.getElementById('complexity').innerHTML = 'Сложный';
+                        document.getElementById('complexity').style.color = '#FF0000';
                     }
                 </script>
 
@@ -131,6 +144,11 @@
                 <p style="margin-bottom: 5px;">О кнопке "Всегда второй"</p>
                 <p style="text-align: left; padding: 0 5px; margin-top: 0px;">Если вы нажмёте на красную или зелёную надпись(
                     "Отключено" и "Включено" соответственно).</br> То вы будете либо играть вторым по умолчанию, либо нет.</br></p>
+                <!---->
+                <p style="margin-bottom: 5px;">Уровень сложности</p>
+                <p style="text-align: left; padding: 0 5px; margin-top: 0px;">В игре есть 3 уровня сложности: Лёгкий, Стандартный, Сложный.</br>
+                        Чтобы поменять уровень сложности надо нажать на соответствующую надпись в настройках.</br>
+                        Надпись либо зеленого, либо жёлтого, либо красного цвета.</br></p>
             </details>
 
             <!--Сброс настроек и аналитики-->
