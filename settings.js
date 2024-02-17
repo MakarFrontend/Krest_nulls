@@ -1,6 +1,7 @@
 const choseSkinDiag = document.getElementById('choseSkin'); //Модальное окно выбора скина
 choseSkinDiag.setAttribute('onclick', "closeGameRezult('choseSkin')");
 const choseSkinContent = document.getElementById('choseSkinContent'); //Внутри диалога
+const gameMap = document.getElementById('gameMap');
 let renderCondition = false;
 
 class Skin {
@@ -73,14 +74,27 @@ function changeSkin(url, why) { //Меняем скин при нажатии
 }
 
 function clickForChangeSkin(why) {
-    function createHeadline(txt) {
+    function createHeadline(txt, important) {
         let headLine = document.createElement('p');
+        headLine.innerHTML = txt;
         headLine.style.float = 'left';
         headLine.style.marginLeft = '5px';
         headLine.style.marginTop = '5px';
         headLine.style.display = 'block';
+        headLine.style.backgroundColor = '#000000';
         headLine.style.width = '100%';
-        headLine.innerHTML = txt;
+        if (important == 1) {
+            headLine.style.position = 'fixed';
+            headLine.style.float = 'left';
+            headLine.style.marginLeft = '0px';
+            headLine.style.marginTop = '0px';
+            headLine.style.height = '20px';
+            headLine.style.width = '120px';
+            headLine.style.border = '1px #FFFFFF solid';
+            headLine.style.top = document.getElementById('choseSkin').style.top - 5;
+            headLine.style.left = document.getElementById('choseSkin').style.left - 5;
+            choseSkinDiag.append(headLine);
+        }
         choseSkinContent.append(headLine);
     }
     function addSkinToModal(url) {
@@ -90,6 +104,7 @@ function clickForChangeSkin(why) {
         skinIMG.style.cursor = 'pointer';
         skinIMG.style.height = '40px';
         skinIMG.style.weight = '40px';
+        skinIMG.style.marginTop = '10px';
         skinIMG.style.marginLeft = '10px';
         skinIMG.style.marginBottom = '5px';
         skinIMG.style.border = '1px solid #FFF'
@@ -99,27 +114,27 @@ function clickForChangeSkin(why) {
 
     choseSkinContent.innerHTML = '';
 
-    switch (why) {
+    /*switch (why) {
         case 1:
-            createHeadline('Ваш скин:');
+            createHeadline('Ваш скин:', 1);
             break;
         case 2:
-            createHeadline('Скин компьютера:');
+            createHeadline('Скин компьютера:', 1);
             break;
-    }
+    }*/
     createHeadline('Базовые скины');
-    baseSkins.forEach((item) => addSkinToModal(item.URL));
+    baseSkins.forEach((item) => addSkinToModal(item.URL, 0));
 
     createHeadline('Скины - точки');
-    dotSkins.forEach((item) => addSkinToModal(item.URL));
+    dotSkins.forEach((item) => addSkinToModal(item.URL, 0));
 
     createHeadline('Планеты');
-    planetSkins.forEach((item) => addSkinToModal(item.URL));
+    planetSkins.forEach((item) => addSkinToModal(item.URL, 0));
 
     createHeadline('Кляксы');
-    blobs.forEach((item) => addSkinToModal(item.URL));
+    blobs.forEach((item) => addSkinToModal(item.URL, 0));
 
-    choseSkinDiag.style.height = '120px';
+    choseSkinDiag.style.height = '130px';
     document.body.style.filter = 'blur(2px)';
     choseSkinDiag.showModal();
 }
@@ -133,7 +148,7 @@ function reset() {
     document.querySelector('#nos').innerHTML = '0';
 }
 
-function complexity(now) {
+function complexity(now) { //Уровень сложности
     switch (now) {
         case 'Лёгкий':
             document.getElementById('complexity').innerHTML = 'Стандартный';

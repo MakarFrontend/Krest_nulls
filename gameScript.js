@@ -8,10 +8,12 @@ let mapForMe = [0, 1, 2, 3,
                 4, 5, 6, 7,
                 8, 9, 10, 11,
                 12, 13, 14, 15];
-let map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0 /**/]; //Карта игрового поля
-sessionStorage.setItem('map', JSON.stringify(map));
+let map; //Карта игрового поля
+let mapNow; //Какое поле сейчас
 let button = document.getElementById('doButton'); //Кнопка второго, заново
 let conditionAlwaysSecond = localStorage.getItem('alwaysSecond') || false; //Состояние второго всегда
+let mapOnLoad = localStorage.getItem('size') || '3 на 3';
+createGameMap(mapOnLoad);
 
 if (conditionAlwaysSecond === 'false') { //Переводим строки в логику
     conditionAlwaysSecond = false;
@@ -19,8 +21,8 @@ if (conditionAlwaysSecond === 'false') { //Переводим строки в л
     conditionAlwaysSecond = true;
 }
 
-if (localStorage.getItem('alwaysSecond') == 'true') { //Если Всегда второй включён
-    computerPlay();
+if (conditionAlwaysSecond == true) { //Если Всегда второй включён
+    alwaysSecond('Отключено');
 }
 
 function alwaysSecond(inn) { //При нажатии на всегда второй
@@ -32,7 +34,7 @@ function alwaysSecond(inn) { //При нажатии на всегда втор�
         button.innerHTML = 'Заново';
         conditionAlwaysSecond = true;
         localStorage.setItem('alwaysSecond', 'true');
-        if (map.join(' ') == '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0') {
+        if ((map.join(' ') == '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0') || map.join(' ') == '0 0 0 0 0 0 0 0 0') {
             computerPlay();
         }
     } else {
@@ -80,7 +82,11 @@ function doButton(ev) { //Кнопка хода второго, Заново
 
 function againInMain() { //Заново
     let e = 0;
-    while (e < 16) {
+    let r = 16;
+    if (mapNow == 3) {
+        r = 9
+    }
+    while (e < r) {
         document.getElementById(`item_${e}`).style.background = '#000';
         document.getElementById(`item_${e}`).style.backgroundSize = 'cover';
         document.getElementById(`item_${e}`).setAttribute('onclick', `Play(${e})`);
@@ -91,7 +97,11 @@ function againInMain() { //Заново
         button.setAttribute('onclick', `doButton("ag")`);
         button.innerHTML = 'Заново';
         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
-        map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        if (mapNow == 3) { 
+            map = [0, 0, 0, /**/ 0, 0, 0, /**/ 0, 0, 0];
+        } else if (mapNow == 4) {
+            map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        }
         sessionStorage.setItem('map', JSON.stringify(map));
         computerPlay();
     } else {
@@ -99,7 +109,11 @@ function againInMain() { //Заново
         button.setAttribute('onclick', `doButton("second")`);
         button.innerHTML = 'Ходить вторым';
         document.getElementById('whyPlay').innerHTML = 'Ваш ход . . .';
-        map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        if (mapNow == 3) { 
+            map = [0, 0, 0, /**/ 0, 0, 0, /**/ 0, 0, 0];
+        } else if (mapNow == 4) {
+            map = [0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/ 0, 0, 0, 0, /**/];
+        }
         sessionStorage.setItem('map', JSON.stringify(map));
     }
 }
@@ -107,84 +121,93 @@ function againInMain() { //Заново
 function checkWin(team) { //Проверка на победу
     function checkNobody() { //Функция Проверки ничьи
         let i = 0;
+        let u = 16;
         let check = 0;
-        while (i < 16) {
+        if (mapNow == 3) {
+            u = 9;
+        }
+        while (i < u) {
             let itemNow = map[i];
             if ((itemNow == 1) || (itemNow == 2)) {
                 check++;
             }
             i++;
         }
-        if (check == 16) {
+        if (check == u) {
             return true;
         } else {
             return false;
         }
     }
-
-    /*Функции проверки победы по: 
-        горизонтали
-        вертикали
-        диагонали*/
-    function checkHorizontal(k) { //Поверка победы по горизонтали
-        let chHo = 0;
-        while (chHo < 4) {
-            if ((map[k] == team) && (map[k + 1] == team) && (map[k + 2] == team)) {
-                return true;
-            }
-            chHo++;
-            k = k + 4;
+    function checking(start, step) { //Варианты
+        if ((map[start] == team) && (map[start + step] == team) && (map[start + (step*2)] == team)) {
+            check = true;
+        } else if ((map[start] == team) && (map[start + step] == team) && (map[start + (step*2)] == team)) {
+            check = true;
+        } else if ((map[start] == team) && (map[start + step] == team) && (map[start + (step*2)] == team)) {
+            check = true;
         }
-        return false;
     }
-    function checkVertical(k) { //Поверка победы по вертикали
-        let chVe = 0; //
-        while (chVe < 4) {
-            if ((map[k] == team) && (map[k + 4] == team) && (map[k + 8] == team)) {
-                return true;
-            }
-            chVe++;
-            k = k + 1;
+    let check = false;
+    /*Горизонталь*/
+    let i = 0;
+    if (mapNow == 4) {
+        while (i <= 12) {
+            checking(i, 1);
+            i += 4;
         }
-        return false;
-    }
-    function checkDiagonal(k, side) { //Проверка победы по диагонали
-        if ((map[k] == team) && (map[k + side] == team) && (map[k + (side*2)] == team)) {
-            return true;
+        i = 1;
+        while (i <= 13) {
+            checking(i, 1);
+            i += 4;
         }
-        return false;
+    } else if (mapNow == 3) {
+        while (i <= 6) {
+            checking(i, 1);
+            i += 3;
+        }
     }
-
-    let option_left_ho = checkHorizontal(0); //Варианты слева, горизонталь
-    let option_right_ho = checkHorizontal(1); //Варианты справа, горизонталь
-    /**/
-    let option_top_ve = checkVertical(0); //Вертикали сверху
-    let option_down_ve = checkVertical(4); //Вертикали снизу
-    /*Диагонали слева направо*/
-    let option_0_5_10_di = checkDiagonal(0, 5)
-    let option_5_10_15_di = checkDiagonal(5, 5)
-    let option_4_9_14_di = checkDiagonal(4, 5)
-    let option_1_6_11_di = checkDiagonal(1, 5)
-    /*Диагонали справо налево*/
-    let option_2_5_8_di = checkDiagonal(2, 3)
-    let option_3_6_9_di = checkDiagonal(3, 3)
-    let option_6_9_12_di = checkDiagonal(6, 3)
-    let option_7_10_13_di = checkDiagonal(7, 3)
-    /*Если выигрыш*/
-    if ((option_left_ho == true) || (option_right_ho == true) || //Горизонтали
-        (option_top_ve == true) || (option_down_ve == true) || //Вертикали
-        (option_0_5_10_di == true) || (option_5_10_15_di == true) || //Диагонали
-        (option_4_9_14_di == true) || (option_1_6_11_di == true) ||
-        (option_2_5_8_di == true) || (option_3_6_9_di == true) ||
-        (option_6_9_12_di == true) || (option_7_10_13_di == true)) { 
-        return true;
+    /*Вертикаль*/
+    i = 0;
+    if (mapNow == 4) {
+        while (i <= 3) {
+            checking(i, 4);
+            i += 1;
+        }
+        i = 4;
+        while (i <= 7) {
+            checking(i, 4);
+            i += 1;
+        }
+    } else if (mapNow == 3) {
+        while (i <= 2) {
+            checking(i, 3);
+            i += 1;
+        }
     }
-
+    /*Диагональ*/
+    if (mapNow == 4) {
+        checking(0, 5);
+        checking(5, 5);
+        checking(1, 5);
+        checking(4, 5);
+        /**/
+        checking(2, 3);
+        checking(3, 3);
+        checking(6, 3);
+        checking(7, 3);
+    } else if (mapNow == 3) {
+        checking(0, 4);
+        checking(2, 2);
+    }
+    if (check == true) {
+        return check;
+    }
     let checkNobodyRezult = checkNobody();
     if (checkNobodyRezult == true) { //Если ничья
-        let g = null;
-        return g;}
-    return false;
+        check = null;
+        }
+    return check;
 }
 
 function computerPlay() { //Компьютер играет
@@ -212,36 +235,55 @@ function computerPlay() { //Компьютер играет
         //lookingWin(start, step, team);
         /*Горизонталь*/
         i = 0;
-        while (i <= 12) {
-            lookingWin(i, 1, s);
-            i += 4;
-        }
-        i = 1;
-        while (i <= 13) {
-            lookingWin(i, 1, s);
-            i += 4;
+        if (mapNow == 4) {
+            while (i <= 12) {
+                lookingWin(i, 1, s);
+                i += 4;
+            }
+            i = 1;
+            while (i <= 13) {
+                lookingWin(i, 1, s);
+                i += 4;
+            }
+        } else if (mapNow == 3) {
+            while (i <= 6) {
+                lookingWin(i, 1, s);
+                i += 3;
+            }
         }
         /*Вертикаль*/
         i = 0;
-        while (i <= 3) {
-            lookingWin(i, 4, s);
-            i += 1;
-        }
-        i = 1;
-        while (i <= 7) {
-            lookingWin(i, 4, s);
-            i += 1;
+        if (mapNow == 4) {
+            while (i <= 3) {
+                lookingWin(i, 4, s);
+                i += 1;
+            }
+            i = 4;
+            while (i <= 7) {
+                lookingWin(i, 4, s);
+                i += 1;
+            }
+        } else if (mapNow == 3) {
+            while (i <= 2) {
+                lookingWin(i, 3, s);
+                i += 1;
+            }
         }
         /*Диагональ*/
-        lookingWin(0, 5, s);
-        lookingWin(5, 5, s);
-        lookingWin(1, 5, s);
-        lookingWin(4, 5, s);
-        /**/
-        lookingWin(2, 3, s);
-        lookingWin(3, 3, s);
-        lookingWin(6, 3, s);
-        lookingWin(7, 3, s);
+        if (mapNow == 4) {
+            lookingWin(0, 5, s);
+            lookingWin(5, 5, s);
+            lookingWin(1, 5, s);
+            lookingWin(4, 5, s);
+            /**/
+            lookingWin(2, 3, s);
+            lookingWin(3, 3, s);
+            lookingWin(6, 3, s);
+            lookingWin(7, 3, s);
+        } else if (mapNow == 3) {
+            lookingWin(0, 4, s);
+            lookingWin(2, 2, s);
+        }
     }
     let shoot; //Выстрел
     let mx = 0; //Ограничение количества циклов, в зависимости от поля, (3 на 3) || (4 на 4)
@@ -254,13 +296,11 @@ function computerPlay() { //Компьютер играет
             i++;
         }
     }
-
     /*Не даём человеку выиграть, сложный режим*/
     if (complexityInGameScriptJS == '2') {
         lookBestWin(1);
     }
-
-    /*Выигрываем по возможности*/
+    /*Выигрываем по возможности, стандарт и сложный*/
     if ((complexityInGameScriptJS == '1') || (complexityInGameScriptJS == '2')) {
         lookBestWin(2);
     }
@@ -279,9 +319,9 @@ function peoplePlay(id) { //Ход человека
 }
 
 function appToLocalStorage(event) { //Запись в память результата и обновление статистики
-    let ball = Number(localStorage.getItem(event)); //Запись в память
+    let ball = Number(localStorage.getItem(event));
     ball++;
-    localStorage.setItem(String(event), String(ball));
+    localStorage.setItem(String(event), String(ball)); //Запись в память
 
     let wins = Number(localStorage.getItem('wins')) || 0; // Получение из памяти
     let overs = Number(localStorage.getItem('overs')) || 0;
@@ -297,7 +337,14 @@ function appToLocalStorage(event) { //Запись в память резуль�
     document.getElementById('nos').innerHTML = nos;
 }
 
-function Play(id) {
+function Play(id) { //Функция игры
+    let e = 0; //Счётчик
+    let o; //Конец счётчика
+    if (mapNow == 3) {
+        o = 9;
+    } else if (mapNow == 4) {
+        o = 16;
+    }
     document.getElementById('plug').style.display = 'block';
     if (conditionAlwaysSecond == false) { //Меняем текст кнопки если игрок первый
         button.removeAttribute('onclick');
@@ -311,8 +358,7 @@ function Play(id) {
         document.getElementById('plug').style.display = 'none';
         gameRezult('Победа');
         whyPlayNow.innerHTML = 'Победа';
-        let e = 0;
-        while (e < 16) {
+        while (e < o) {
             document.getElementById(`item_${e}`).removeAttribute('onclick');
             e++;
         }
@@ -330,8 +376,7 @@ function Play(id) {
                 document.getElementById('plug').style.display = 'none';
                 gameRezult('Поражение');
                 whyPlayNow.innerHTML = 'Поражение';
-                let e = 0;
-                while (e < 16) {
+                while (e < o) {
                     document.getElementById(`item_${e}`).removeAttribute('onclick');
                     e++;
                 }
@@ -349,4 +394,89 @@ function Play(id) {
         whyPlayNow.innerHTML = 'Компьютер думает . . .';
         setTimeout(PlayElse, 500);
     }
+}
+
+function newMap(whatMapNow) {
+    const gameMap = document.getElementById('gameMap');
+    let f = 0; //Счётчик
+    switch (whatMapNow) {
+        case '4 на 4':
+            document.getElementById('mapSize').innerHTML = '3 на 3';
+            mapNow = 3;
+            map = [0, 0, 0, /**/ 0, 0, 0, /**/0, 0, 0];
+            gameMap.innerHTML = '';
+            gameMap.style.paddingLeft = '7px';
+            while (f <= 8) {
+                let y = document.createElement('button');
+                y.className = 'gameLi';
+                y.setAttribute('id', `item_${f}`);
+                y.setAttribute('onclick', `Play(${f})`)
+                y.style.width = '101px';
+                y.style.height = '101px';
+                gameMap.append(y);
+                f += 1;
+            }
+            localStorage.setItem('size', '3 на 3');
+            againInMain()
+            break;
+        case '3 на 3':
+            document.getElementById('mapSize').innerHTML = '4 на 4';
+            mapNow = 4;
+            map = [0, 0, 0, 0, /**/0, 0, 0, 0, /**/0, 0, 0, 0, /**/0, 0, 0, 0/**/];
+            gameMap.innerHTML = '';
+            gameMap.style.paddingLeft = '12px';
+            while (f <= 15) {
+                let y = document.createElement('button');
+                y.className = 'gameLi';
+                y.setAttribute('id', `item_${f}`);
+                y.setAttribute('onclick', `Play(${f})`)
+                y.style.width = '75px';
+                y.style.height = '75px';
+                gameMap.append(y);
+                f += 1;
+            }
+            localStorage.setItem('size', '4 на 4');
+            againInMain()
+            break;
+    }
+    sessionStorage.setItem('map', JSON.stringify(map));
+}
+
+function createGameMap(mapFromMemory) { //Делаем карту, в зависимости от той, которая была в памяти
+    let f = 0; //переменная счётчик
+    switch (mapFromMemory) {
+        case '4 на 4':
+            while (f <= 15) {
+                let y = document.createElement('button');
+                y.className = 'gameLi';
+                y.setAttribute('id', `item_${f}`);
+                y.setAttribute('onclick', `Play(${f})`)
+                y.style.width = '75px';
+                y.style.height = '75px';
+                gameMap.append(y);
+                f += 1;
+            }
+            document.getElementById('mapSize').innerHTML = '4 на 4';
+            mapNow = 4;
+            map = [0, 0, 0, 0, /**/0, 0, 0, 0, /**/0, 0, 0, 0, /**/0, 0, 0, 0/**/];
+            gameMap.style.paddingLeft = '12px';
+            break;
+        case '3 на 3':
+            while (f <= 8) {
+                let y = document.createElement('button');
+                y.className = 'gameLi';
+                y.setAttribute('id', `item_${f}`);
+                y.setAttribute('onclick', `Play(${f})`)
+                y.style.width = '101px';
+                y.style.height = '101px';
+                gameMap.append(y);
+                f += 1;
+            }
+            document.getElementById('mapSize').innerHTML = '3 на 3';
+            mapNow = 3;
+            map = [0, 0, 0, /**/ 0, 0, 0, /**/0, 0, 0];
+            gameMap.style.paddingLeft = '10px';
+            break;
+    }
+    againInMain();
 }

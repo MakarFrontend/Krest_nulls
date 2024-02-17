@@ -26,26 +26,7 @@
         <main>
                 <!--Игровое поле-->
                 <p id="whyPlay">Ваш ход . . .</p>
-                <div class="gameMap">
-                    <button class="gameLi" id="item_0" onclick="Play(0)"></button>
-                    <button class="gameLi" id="item_1" onclick="Play(1)"></button>
-                    <button class="gameLi" id="item_2" onclick="Play(2)"></button>
-                    <button class="gameLi" id="item_3" onclick="Play(3)"></button>
-                    </br>
-                    <button class="gameLi" id="item_4" onclick="Play(4)"></button>
-                    <button class="gameLi" id="item_5" onclick="Play(5)"></button>
-                    <button class="gameLi" id="item_6" onclick="Play(6)"></button>
-                    <button class="gameLi" id="item_7" onclick="Play(7)"></button>
-                    </br>
-                    <button class="gameLi" id="item_8" onclick="Play(8)"></button>
-                    <button class="gameLi" id="item_9" onclick="Play(9)"></button>
-                    <button class="gameLi" id="item_10" onclick="Play(10)"></button>
-                    <button class="gameLi" id="item_11" onclick="Play(11)"></button>
-                    </br>
-                    <button class="gameLi" id="item_12" onclick="Play(12)"></button>
-                    <button class="gameLi" id="item_13" onclick="Play(13)"></button>
-                    <button class="gameLi" id="item_14" onclick="Play(14)"></button>
-                    <button class="gameLi" id="item_15" onclick="Play(15)"></button>
+                <div id="gameMap" class="gameMap">
                 </div>
 
                 <!--Ходить вторым или заново-->
@@ -59,6 +40,7 @@
                     <span style="margin-left: 10px;">Настройки</span>
                 </summary>
 
+                <!--Скины выбираем здесь-->
                 <div style="display: block; height: auto; width: 100%;">
                     <!--Выбор человек скин-->
                     <p style="float: left; margin-top: 15px; margin-bottom: 0px; margin-left: 5px; margin-right: 5px;">Вы</p>
@@ -78,16 +60,23 @@
                         document.getElementById('computerSkinChange').setAttribute('src', y);
                     </script>
                 </div>
-
+                <!--Всегда второй-->
                 <p></p>
                 <p style="text-align: left; margin-bottom: 0px; margin-top: 0px; margin-left: 5px; margin-right: 5px;">
                     Всегда второй: 
                     <span id="conditionAlwaysSecond" onclick="alwaysSecond(this.innerHTML)" style="color: #FF0000;">Отключено</span>
                 </p>
+                <!--Уровень сложности-->
                 <p></p>
                 <p style="text-align: left; margin-bottom: 0px; margin-top: 0px; margin-left: 5px; margin-right: 5px;">
                     Уровень сложности: 
                     <span id="complexity" onclick="complexity(this.innerHTML)" style="color: #FFFF00;">Стандартный</span>
+                </p>
+                <!--Размер поля-->
+                <p></p>
+                <p style="text-align: left; margin-bottom: 0px; margin-top: 0px; margin-left: 5px; margin-right: 5px;">
+                    Размер поля: 
+                    <span id="mapSize" onclick="newMap(this.innerHTML)">4 на 4</span>
                 </p>
                 <script>
                     if (localStorage.getItem('alwaysSecond') == 'true') {

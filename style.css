@@ -56,6 +56,7 @@ dialog {
 }
 .gameLi {
     display: inline-block;
+    text-align: center;
     border-width: 0px;
     margin: 0%;
     padding: 0px;
@@ -67,7 +68,7 @@ dialog {
     cursor: pointer;
 }
 
-#conditionAlwaysSecond, #complexity {
+#conditionAlwaysSecond, #complexity, #mapSize {
     cursor: pointer;
 }
 
@@ -77,6 +78,6 @@ dialog {
     cursor: pointer;
 }
 
-#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #complexity, #head, .gameLi, img {
+#peopleSkinChange, #computerSkinChange, #conditionAlwaysSecond, #complexity, #mapSize, #head, .gameLi, img {
     -webkit-tap-highlight-color: transparent;
 }
