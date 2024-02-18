@@ -405,7 +405,7 @@ function newMap(whatMapNow) {
             mapNow = 3;
             map = [0, 0, 0, /**/ 0, 0, 0, /**/0, 0, 0];
             gameMap.innerHTML = '';
-            gameMap.style.paddingLeft = '7px';
+            gameMap.style.paddingLeft = '10px';
             while (f <= 8) {
                 let y = document.createElement('button');
                 y.className = 'gameLi';
